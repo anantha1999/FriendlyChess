@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1002838255709",
+    "firebase_url": "https://friendlychess-3e8c4-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "friendlychess-3e8c4",
+    "storage_bucket": "friendlychess-3e8c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002838255709:android:611f2b3927d413eaba05b4",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002838255709-tc84knld0h9nba79m5ubtkhfca103696.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAttn1usSr-6Nmp9HHMT7fb8OIFywf60Ec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002838255709-tc84knld0h9nba79m5ubtkhfca103696.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
