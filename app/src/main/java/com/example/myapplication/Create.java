@@ -137,6 +137,8 @@ public class Create extends AppCompatActivity {
                 }
                 game.child("white").setValue(white);
                 game.child("black").setValue(black);
+                game.child("whitedraw").setValue(0);
+                game.child("blackdraw").setValue(0);
                 game.child("players").setValue(1);
                 game.child("timer").setValue(Common.isTimer);
                 game.child("colour").setValue((this.playerWhite)? 0:1);

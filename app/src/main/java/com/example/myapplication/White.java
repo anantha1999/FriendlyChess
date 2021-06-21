@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -95,6 +97,12 @@ public class White extends AppCompatActivity {
 
     private DatabaseReference game;
 
+    private Button draw;
+
+    private boolean draw_flag = false;
+
+    private boolean request_flag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +113,7 @@ public class White extends AppCompatActivity {
         board = findViewById(R.id.board);
         resign = findViewById(R.id.resign);
         leave = findViewById(R.id.leave);
+        draw = findViewById(R.id.draw);
         whiteClock = findViewById(R.id.player_timer);
         blackClock = findViewById(R.id.opponent_timer);
 
@@ -191,6 +200,97 @@ public class White extends AppCompatActivity {
                             (dialog, which) -> dialog.cancel());
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+        });
+
+        draw.setOnClickListener(v -> {
+            request_flag = true;
+            game.child("draw").setValue(-1);
+            Context context = getApplicationContext();
+            CharSequence text = "Draw requested!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        });
+
+        game.child("draw").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(draw_flag){
+                    int draw = snapshot.getValue(Integer.class);
+                    if(request_flag && draw == 1){
+                        Common.gameOver = true;
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(White.this);
+
+                        builder.setMessage("Opponent accepted the draw!");
+                        builder.setTitle("");
+                        builder.setCancelable(false);
+
+                        builder
+                                .setPositiveButton(
+                                        "Ok",
+                                        (dialog, which) -> {
+                                            dialog.cancel();
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                    else if(request_flag && draw == 0){
+                        request_flag = false;
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(White.this);
+
+                        builder.setMessage("Draw was declined.");
+                        builder.setTitle("");
+                        builder.setCancelable(false);
+
+                        builder
+                                .setPositiveButton(
+                                        "Ok",
+                                        (dialog, which) -> {
+                                            dialog.cancel();
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                    else if(!request_flag && draw == -1){
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(White.this);
+
+                        builder.setMessage("Opponent is requesting a draw");
+                        builder.setTitle("");
+                        builder.setCancelable(false);
+
+                        builder
+                                .setPositiveButton(
+                                        "Accept",
+                                        (dialog, which) -> {
+                                            game.child("draw").setValue(1);
+                                            Common.gameOver = true;
+                                        });
+                        builder
+                                .setNegativeButton(
+                                        "Decline",
+                                        (dialog, which) -> {
+                                            game.child("draw").setValue(0);
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                }
+                else{
+                    draw_flag = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
         });
 
         leave.setOnClickListener(v -> {
@@ -361,6 +461,11 @@ public class White extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed(){
+
+    }
+
     private void setOnClickListeners(){
         for(int i=0;i<8;++i){
             ChessPiece whitePawn = whitePawns[i];
@@ -369,12 +474,12 @@ public class White extends AppCompatActivity {
                 if(!Common.gameOver && whitePawn.allowed && white_turn) {
                     if (selectedPiece == null) {
                         selectedPiece = whitePawn;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         if (selectedPiece != whitePawn) {
                             selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                             selectedPiece = whitePawn;
-                            selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                            selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                         } else {
                             selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                             selectedPiece = null;
@@ -460,12 +565,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteKing.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteKing;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteKing) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteKing;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -478,12 +583,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteQueen.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteQueen;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteQueen) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteQueen;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -496,12 +601,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteBishop1.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteBishop1;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteBishop1) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteBishop1;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -514,12 +619,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteBishop2.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteBishop2;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteBishop2) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteBishop2;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -532,12 +637,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteKnight1.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteKnight1;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteKnight1) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteKnight1;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -550,12 +655,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteKnight2.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteKnight2;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteKnight2) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteKnight2;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -568,12 +673,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteRook1.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteRook1;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteRook1) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteRook1;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -586,12 +691,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteRook2.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteRook2;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                 } else {
                     if (selectedPiece != whiteRook2) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteRook2;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#2696AF"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;

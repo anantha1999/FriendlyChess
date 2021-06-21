@@ -455,6 +455,20 @@
         android:theme="@style/button1"
         app:layout_constraintBottom_toBottomOf="@+id/resign"
         app:layout_constraintEnd_toEndOf="@+id/board"
+        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintStart_toEndOf="@+id/draw"
+        app:layout_constraintTop_toBottomOf="@+id/board"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/draw"
+        android:layout_width="123dp"
+        android:layout_height="55dp"
+        android:text="Draw"
+        android:textColor="#070707"
+        android:theme="@style/button1"
+        app:layout_constraintBottom_toBottomOf="@+id/resign"
+        app:layout_constraintEnd_toEndOf="@+id/board"
         app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toEndOf="@+id/resign"
         app:layout_constraintTop_toBottomOf="@+id/board"
