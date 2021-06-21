@@ -93,12 +93,14 @@ public class White extends AppCompatActivity {
 
     private Button leave;
 
+    private DatabaseReference game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_white);
 
-        onBackPressed();
+//        onBackPressed();
 
         board = findViewById(R.id.board);
         resign = findViewById(R.id.resign);
@@ -166,7 +168,7 @@ public class White extends AppCompatActivity {
 
 
 
-        DatabaseReference game = database.child(Common.code);
+        game = database.child(Common.code);
         resign.setOnClickListener(v -> {
             AlertDialog.Builder builder
                     = new AlertDialog
@@ -180,7 +182,7 @@ public class White extends AppCompatActivity {
                     .setPositiveButton(
                             "Yes",
                             (dialog, which) -> {
-                                game.child("White").child("isGameOver").setValue(-1);
+                                game.child("white").child("isGameOver").setValue(-1);
                                 Common.gameOver = true;
                             });
             builder
@@ -206,6 +208,10 @@ public class White extends AppCompatActivity {
                                 "Yes",
                                 (dialog, which) -> {
                                     Intent intent = new Intent(this, Home.class);
+                                    Common.gameOver = false;
+                                    Common.isTimer = false;
+                                    Common.time_increment = 0;
+                                    Common.time.black = Common.time.white = 0;
                                     startActivity(intent);
                                 });
                 builder
@@ -306,7 +312,7 @@ public class White extends AppCompatActivity {
                             Common.underCheck = true;
                             print("King under check");
                             if (isCheckmate()) {
-                                game.child("White").child("isGameOver").setValue(-1);
+                                game.child("white").child("isGameOver").setValue(-1);
                                 Common.gameOver = true;
                                 AlertDialog.Builder builder
                                         = new AlertDialog
@@ -1195,7 +1201,22 @@ public class White extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                game.child("white").child("isGameOver").setValue(-1);
+                Common.gameOver = true;
+                AlertDialog.Builder builder
+                        = new AlertDialog
+                        .Builder(White.this);
+                builder.setMessage("You lost.");
+                builder.setTitle("");
+                builder.setCancelable(false);
+                builder
+                        .setPositiveButton(
+                                "OK",
+                                (dialog, which) -> {
+                                    dialog.cancel();
+                                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         };
         whiteTimer.start();
@@ -1228,4 +1249,6 @@ public class White extends AppCompatActivity {
     private void stopBlackTimer(){
         blackTimer.cancel();
     }
+
+
 }

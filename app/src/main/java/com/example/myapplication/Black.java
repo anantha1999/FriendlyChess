@@ -102,12 +102,14 @@ public class Black extends AppCompatActivity {
 
     private Button leave;
 
+    private DatabaseReference game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_black);
 
-        onBackPressed();
+//        onBackPressed();
 
         whiteClock = findViewById(R.id.opponent_timer);
         blackClock = findViewById(R.id.player_timer);
@@ -175,7 +177,7 @@ public class Black extends AppCompatActivity {
         setOnClickListeners();
         updateAttackSquares(boardLocations, attackedSquares);
 
-        DatabaseReference game = database.child(Common.code);
+        game = database.child(Common.code);
         resign.setOnClickListener(v -> {
             AlertDialog.Builder builder
                     = new AlertDialog
@@ -189,7 +191,7 @@ public class Black extends AppCompatActivity {
                     .setPositiveButton(
                             "Yes",
                             (dialog, which) -> {
-                                game.child("Black").child("isGameOver").setValue(1);
+                                game.child("black").child("isGameOver").setValue(1);
                                 Common.gameOver = true;
                             });
             builder
@@ -215,6 +217,10 @@ public class Black extends AppCompatActivity {
                                 "Yes",
                                 (dialog, which) -> {
                                     Intent intent = new Intent(this, Home.class);
+                                    Common.gameOver = false;
+                                    Common.isTimer = false;
+                                    Common.time_increment = 0;
+                                    Common.time.black = Common.time.white = 0;
                                     startActivity(intent);
                                 });
                 builder
@@ -314,7 +320,7 @@ public class Black extends AppCompatActivity {
                         if (attackedSquares[blackKing.location.y][blackKing.location.x] == 1) {
                             Common.underCheck = true;
                             if (isCheckmate()) {
-                                game.child("Black").child(("isGameOver")).setValue(1);
+                                game.child("black").child(("isGameOver")).setValue(1);
                                 Common.gameOver = true;
                                 AlertDialog.Builder builder
                                         = new AlertDialog
@@ -1249,7 +1255,22 @@ public class Black extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                game.child("black").child("isGameOver").setValue(-1);
+                Common.gameOver = true;
+                AlertDialog.Builder builder
+                        = new AlertDialog
+                        .Builder(Black.this);
+                builder.setMessage("You lost.");
+                builder.setTitle("");
+                builder.setCancelable(false);
+                builder
+                        .setPositiveButton(
+                                "OK",
+                                (dialog, which) -> {
+                                    dialog.cancel();
+                                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         };
         blackTimer.start();
@@ -1262,5 +1283,6 @@ public class Black extends AppCompatActivity {
     private void stopBlackTimer(){
         blackTimer.cancel();
     }
+
 
 }
