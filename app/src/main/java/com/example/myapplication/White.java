@@ -109,7 +109,7 @@ public class White extends AppCompatActivity {
         setContentView(R.layout.activity_white);
 
 //        onBackPressed();
-
+        //Initialise views
         board = findViewById(R.id.board);
         resign = findViewById(R.id.resign);
         leave = findViewById(R.id.leave);
@@ -172,47 +172,71 @@ public class White extends AppCompatActivity {
 
         initialBoardLocations();
         updateLocations(); //Updates the location field in each chess piece
-        setOnClickListeners();
-        updateAttackSquares(boardLocations, attackedSquares);
+        setOnClickListeners(); //Sets onClick listeners
+        updateAttackSquares(boardLocations, attackedSquares); //Updates initial attack squares
 
 
 
         game = database.child(Common.code);
-        resign.setOnClickListener(v -> {
-            AlertDialog.Builder builder
-                    = new AlertDialog
-                    .Builder(this);
 
-            builder.setMessage("Are you sure you want to resign?");
-            builder.setTitle("");
-            builder.setCancelable(false);
+        //Checks if the game has a timer
+        game.child("timer").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Common.isTimer = snapshot.getValue(Boolean.class);
+            }
 
-            builder
-                    .setPositiveButton(
-                            "Yes",
-                            (dialog, which) -> {
-                                game.child("white").child("isGameOver").setValue(-1);
-                                Common.gameOver = true;
-                            });
-            builder
-                    .setNegativeButton(
-                            "No",
-                            (dialog, which) -> dialog.cancel());
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
         });
+
+        //On click listener for resign, draw and leave buttons
+        resign.setOnClickListener(v -> {
+            if(!Common.gameOver) {
+                AlertDialog.Builder builder
+                        = new AlertDialog
+                        .Builder(this);
+
+                builder.setMessage("Are you sure you want to resign?");
+                builder.setTitle("");
+                builder.setCancelable(false);
+
+                builder
+                        .setPositiveButton(
+                                "Yes",
+                                (dialog, which) -> {
+                                    game.child("white").child("isGameOver").setValue(-1);
+
+                                    stopAllTimers();// stop the timers
+
+                                    Common.gameOver = true;
+                                });
+                builder
+                        .setNegativeButton(
+                                "No",
+                                (dialog, which) -> dialog.cancel());
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
 
         draw.setOnClickListener(v -> {
-            request_flag = true;
-            game.child("draw").setValue(-1);
-            Context context = getApplicationContext();
-            CharSequence text = "Draw requested!";
-            int duration = Toast.LENGTH_SHORT;
+            if(!Common.gameOver) {
+                request_flag = true;
+                game.child("draw").setValue(-1);
+                Context context = getApplicationContext();
+                CharSequence text = "Draw requested!";
+                int duration = Toast.LENGTH_SHORT;
 
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
         });
 
+        //listens for whether requested draw has been accepted or declined, or if there are any draw requests
         game.child("draw").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -220,6 +244,9 @@ public class White extends AppCompatActivity {
                     int draw = snapshot.getValue(Integer.class);
                     if(request_flag && draw == 1){
                         Common.gameOver = true;
+
+                        stopAllTimers();// stop the timers
+
                         AlertDialog.Builder builder
                                 = new AlertDialog
                                 .Builder(White.this);
@@ -271,6 +298,8 @@ public class White extends AppCompatActivity {
                                         (dialog, which) -> {
                                             game.child("draw").setValue(1);
                                             Common.gameOver = true;
+
+                                            stopAllTimers(); // stop the timers
                                         });
                         builder
                                 .setNegativeButton(
@@ -341,13 +370,17 @@ public class White extends AppCompatActivity {
             }
         });
 
+        //Listens for opponent moves
         game.child("black").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(flag){
                     WhiteBlack blackMove = snapshot.getValue(WhiteBlack.class);
-                    if(blackMove.isGameOver != 0){
+                    if(blackMove.isGameOver != 0){ //Checks if the opponent resigned or got checkmated
                         Common.gameOver = true;
+
+                        stopAllTimers();// stop the timers
+
                         if(blackMove.isGameOver == -1){
                             AlertDialog.Builder builder
                                     = new AlertDialog
@@ -387,8 +420,11 @@ public class White extends AppCompatActivity {
                         }
 
                         ChessPiece piece = getPieceBasedOnId(blackMove.id);
-                        removeAttackSquares(boardLocations, attackedSquares);
+                        removeAttackSquares(boardLocations, attackedSquares);//removes the old attacked squares before updating with new ones
+                        //Moves the opponent piece
                         Helper.moveOpponentPiece(blackMove.old_x, blackMove.old_y, blackMove.new_x, blackMove.new_y, boardLocations, attackedSquares, piece, pieceLocations);
+
+                        //Checks if the opponent has captured a piece
                         if (blackMove.capturedPiece_id != 0) {
                             ChessPiece captured = getPieceBasedOnId(blackMove.capturedPiece_id);
                             Helper.removeAttackSquare(captured, attackedSquares, boardLocations);
@@ -397,6 +433,8 @@ public class White extends AppCompatActivity {
 
                             blackMove.capturedPiece_id = 0;
                         }
+
+                        //Checks if the opponent has castled
                         if (blackMove.castle == 1) {
                             flag = false;
                             Extra rook = blackMove.rook;
@@ -406,14 +444,19 @@ public class White extends AppCompatActivity {
                             Helper.moveOpponentPiece(rook.old_x, rook.old_y, rook.new_x, rook.new_y, boardLocations, attackedSquares, piece, pieceLocations);
                         }
 
+                        //Finally updates the attack squares after the opponent piece is moved
                         updateAttackSquares(boardLocations, attackedSquares);
 
+                        //Checks if king under check after opponent move
                         if (attackedSquares[whiteKing.location.y][whiteKing.location.x] == 1) {
                             Common.underCheck = true;
-                            print("King under check");
-                            if (isCheckmate()) {
+//                            print("King under check");
+                            if (isCheckmate()) { //Checks if the player got checkmated
                                 game.child("white").child("isGameOver").setValue(-1);
                                 Common.gameOver = true;
+
+                                stopAllTimers();
+
                                 AlertDialog.Builder builder
                                         = new AlertDialog
                                         .Builder(White.this);
@@ -432,6 +475,7 @@ public class White extends AppCompatActivity {
 
                         }
 
+                        //If the game has timer then stop opponent timer and start player timer
                         if (Common.isTimer) {
                             stopBlackTimer();
                             startWhiteTimer();
@@ -440,12 +484,15 @@ public class White extends AppCompatActivity {
                     }
                 }
                 else{
-                    WhiteBlack timeDetails = snapshot.getValue(WhiteBlack.class);
-                    Common.isTimer = timeDetails.isTimer;
-                    Common.time.white = timeDetails.time;
-                    Common.time.black = timeDetails.time;
-                    Common.time_increment = timeDetails.bonus;
+                    //When the opponent move listener is initialised in the beginning of the game, get all the time related details
                     if(Common.isTimer){
+                        WhiteBlack timeDetails = snapshot.getValue(WhiteBlack.class);
+
+                        Common.isTimer = timeDetails.isTimer;
+                        Common.time.white = timeDetails.time;
+                        Common.time.black = timeDetails.time;
+                        Common.time_increment = timeDetails.bonus;
+
                         whiteClock.setText(Helper.convertTime((int)(Common.time.white)));
                         blackClock.setText(Helper.convertTime((int)(Common.time.black)));
                         startWhiteTimer();
@@ -461,6 +508,7 @@ public class White extends AppCompatActivity {
         });
     }
 
+    //Overriding to prevent pressing back button to change the activity
     @Override
     public void onBackPressed(){
 
@@ -962,6 +1010,7 @@ public class White extends AppCompatActivity {
 
 
     private void updateBoardLocations(ChessPiece piece, int new_x, int new_y){
+        //Updates player's moves on board
         DatabaseReference game = database.child(Common.code);
         Common.whiteBlack.old_x = (7-piece.location.x);
         Common.whiteBlack.old_y = (7-piece.location.y);
@@ -1355,5 +1404,18 @@ public class White extends AppCompatActivity {
         blackTimer.cancel();
     }
 
+    private void stopAllTimers(){
+        try{
+            stopWhiteTimer();
+        }
+        catch (Exception e){
 
+        }
+        try{
+            stopBlackTimer();
+        }
+        catch (Exception e){
+
+        }
+    }
 }
