@@ -861,6 +861,7 @@ public class White extends AppCompatActivity {
             blackPawns[i].id = -i-1;
             pieceLocations[1][i] = -i-1;
             pieceLocations[6][i] = i+1;
+            getId_piece.put(-i-1,blackPawns[i]);
         }
 
         whiteKing.location = new Location();
@@ -951,6 +952,15 @@ public class White extends AppCompatActivity {
         whiteKnight2.name = blackKnight2.name = "Knight";
         whiteRook1.name = blackRook1.name = "Rook";
         whiteRook2.name = blackRook2.name = "Rook";
+
+        getId_piece.put(-9,blackKing);
+        getId_piece.put(-10,blackQueen);
+        getId_piece.put(-11,blackBishop1);
+        getId_piece.put(-12,blackBishop2);
+        getId_piece.put(-13,blackKnight1);
+        getId_piece.put(-14,blackKnight2);
+        getId_piece.put(-15,blackRook1);
+        getId_piece.put(-16,blackRook2);
 
         whiteKing.id = 9;
         blackKing.id = -9;
