@@ -433,8 +433,19 @@ public class Black extends AppCompatActivity {
                             Common.time.white = whiteMove.time;
                             whiteClock.setText(Helper.convertTime(Common.time.white));
                         }
-                        ChessPiece piece = getPieceBasedOnId(whiteMove.id);
+                        ChessPiece piece = getPiece(whiteMove.id, whiteMove.old_id);
                         removeAttackSquares(boardLocations, attackedSquares);//removes the old attacked squares before updating with new ones
+
+                        if(Math.abs(whiteMove.id) > opponent_ids){
+                            piece.id = whiteMove.id;
+                            switch(whiteMove.new_name){
+                                case "Queen": piece.piece.setImageResource(R.drawable.white_queen); piece.name = whiteQueen.name; break;
+                                case "Rook": piece.piece.setImageResource(R.drawable.white_rook); piece.name = whiteRook1.name;break;
+                                case "Bishop": piece.piece.setImageResource(R.drawable.white_bishop); piece.name = whiteBishop1.name; break;
+                                case "Knight": piece.piece.setImageResource(R.drawable.white_knight); piece.name = whiteKnight1.name; break;
+                            }
+                            getId_piece.put(whiteMove.id, piece);
+                        }
                         //Moves the opponent piece
                         Helper.moveOpponentPiece(whiteMove.old_x, whiteMove.old_y, whiteMove.new_x, whiteMove.new_y, boardLocations, attackedSquares, piece, pieceLocations);
 
@@ -1069,34 +1080,42 @@ public class Black extends AppCompatActivity {
     }
 
     private void updateBoardLocations(ChessPiece piece, int new_x, int new_y){
-        DatabaseReference game = database.child(Common.code);
-        Common.whiteBlack.old_x = (7-piece.location.x);
-        Common.whiteBlack.old_y = (7-piece.location.y);
-        boardLocations[piece.location.y][piece.location.x] = 0;
+        if(new_y == 0 && piece.name.equals("Pawn")){
+            pawnPromotion(piece, new_x, new_y);
+        }
+        else {
+            DatabaseReference game = database.child(Common.code);
+            Common.whiteBlack.old_x = (7 - piece.location.x);
+            Common.whiteBlack.old_y = (7 - piece.location.y);
+            boardLocations[piece.location.y][piece.location.x] = 0;
 //        pieceLocations[new_y][new_x] = piece.id;
 //        pieceLocations[piece.location.y][piece.location.x] = 0;
-        boardLocations[new_y][new_x] = -1;
-        piece.location.x = new_x;
-        piece.location.y = new_y;
+            boardLocations[new_y][new_x] = -1;
+            piece.location.x = new_x;
+            piece.location.y = new_y;
 
-        Common.whiteBlack.new_x = (7-piece.location.x);
-        Common.whiteBlack.new_y = (7-piece.location.y);
+            Common.whiteBlack.new_x = (7 - piece.location.x);
+            Common.whiteBlack.new_y = (7 - piece.location.y);
 
-        if(piece.name.equals("King") || piece.name.equals("Queen")) Common.whiteBlack.id = piece.id;
-        else if(piece.name.equals("Pawn")) Common.whiteBlack.id = (piece.id > 0)? (9-piece.id):(-9-piece.id);
-        else if(piece.id%2 == 0) Common.whiteBlack.id = (piece.id > 0)?  piece.id-1: piece.id+1;
-        else Common.whiteBlack.id = (piece.id > 0)? piece.id+1:piece.id-1;
+            if (piece.name.equals("King") || piece.name.equals("Queen"))
+                Common.whiteBlack.id = piece.id;
+            else if (piece.name.equals("Pawn"))
+                Common.whiteBlack.id = (piece.id > 0) ? (9 - piece.id) : (-9 - piece.id);
+            else if (piece.id % 2 == 0)
+                Common.whiteBlack.id = (piece.id > 0) ? piece.id - 1 : piece.id + 1;
+            else Common.whiteBlack.id = (piece.id > 0) ? piece.id + 1 : piece.id - 1;
 
-        if(Common.isTimer) stopBlackTimer();
+            if (Common.isTimer) stopBlackTimer();
 
-        Common.whiteBlack.time = Common.time.black;
-        game.child("black").setValue(Common.whiteBlack);
-        updateAttackSquares(boardLocations, attackedSquares);
-        if(attackedSquares[blackKing.location.y][whiteKing.location.x] == 0){
-            Common.underCheck = false;
+            Common.whiteBlack.time = Common.time.black;
+            game.child("black").setValue(Common.whiteBlack);
+            updateAttackSquares(boardLocations, attackedSquares);
+            if (attackedSquares[blackKing.location.y][whiteKing.location.x] == 0) {
+                Common.underCheck = false;
 //            System.out.println("King not under check!");
+            }
+            if (Common.isTimer) startWhiteTimer();
         }
-        if(Common.isTimer) startWhiteTimer();
     }
 
     private boolean isMovePossible(ChessPiece piece, int new_x, int new_y){
@@ -1536,7 +1555,7 @@ public class Black extends AppCompatActivity {
                     }
                     Common.whiteBlack.new_name = piece.name;
 
-                    if (Common.isTimer) stopWhiteTimer();
+                    if (Common.isTimer) stopBlackTimer();
 
 
                     Common.whiteBlack.time = Common.time.white; //Update white time in firebase
@@ -1547,7 +1566,7 @@ public class Black extends AppCompatActivity {
 //            System.out.println("King not under check!");
                     }
 
-                    if (Common.isTimer) startBlackTimer();
+                    if (Common.isTimer) startWhiteTimer();
                     dialog.cancel();
                 });
 
