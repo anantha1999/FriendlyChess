@@ -436,7 +436,8 @@ public class Black extends AppCompatActivity {
                         ChessPiece piece = getPiece(whiteMove.id, whiteMove.old_id);
                         removeAttackSquares(boardLocations, attackedSquares);//removes the old attacked squares before updating with new ones
 
-                        if(Math.abs(whiteMove.id) > opponent_ids){
+                        if(Math.abs(whiteMove.id) > opponent_ids){ //checking if pawn has been promoted by checking if there is a new piece id
+                            opponent_ids++;
                             piece.id = whiteMove.id;
                             switch(whiteMove.new_name){
                                 case "Queen": piece.piece.setImageResource(R.drawable.white_queen); piece.name = whiteQueen.name; break;
