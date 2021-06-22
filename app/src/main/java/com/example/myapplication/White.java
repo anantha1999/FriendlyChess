@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class White extends AppCompatActivity {
 
@@ -111,6 +112,8 @@ public class White extends AppCompatActivity {
     private int new_ids = 17;
 
     private int opponent_ids = 16;
+
+    private Vector<View> capturedPieces = new Vector<>(16);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,6 +353,7 @@ public class White extends AppCompatActivity {
                                     Common.isTimer = false;
                                     Common.time_increment = 0;
                                     Common.time.black = Common.time.white = 0;
+                                    Helper.restoreViews(capturedPieces);
                                     startActivity(intent);
                                 });
                 builder
@@ -447,11 +451,11 @@ public class White extends AppCompatActivity {
 
                         //Checks if the opponent has captured a piece
                         if (blackMove.capturedPiece_id != 0) {
-                            ChessPiece captured = getPieceBasedOnId(blackMove.capturedPiece_id);
-                            Helper.removeAttackSquare(captured, attackedSquares, boardLocations);
+                            ChessPiece captured = getId_piece.get(blackMove.capturedPiece_id);
 
+                            captured.captured = true;
                             captured.piece.setVisibility(View.GONE);
-
+                            capturedPieces.add(captured.piece);
                             blackMove.capturedPiece_id = 0;
                         }
 
@@ -799,8 +803,8 @@ public class White extends AppCompatActivity {
     }
 
     private void movePiece(float x, float y){
-        int x_mul = (int)(x/126);
-        int y_mul = (int)(y/126);
+        int x_mul = ((int)(x/126)) == 8? 7:((int)(x/126));
+        int y_mul = ((int)(y/126)) == 8? 7:((int)(y/126));
         print(x_mul+" "+y_mul);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) selectedPiece.piece.getLayoutParams();
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
@@ -814,6 +818,7 @@ public class White extends AppCompatActivity {
         selectedPiece.piece.setLayoutParams(params);
         selectedPiece.firstMove = false;
         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
+        Common.whiteBlack.capturedPiece_id = 0;
         updateBoardLocations(selectedPiece, x_mul, y_mul);
         white_turn = false;
         selectedPiece = null;
@@ -831,8 +836,8 @@ public class White extends AppCompatActivity {
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
             piece.captured = false;
             updateAttackSquares(boardLocations, attackedSquares);
-            Helper.print2D(boardLocations);
-            Helper.print2D(attackedSquares);
+//            Helper.print2D(boardLocations);
+//            Helper.print2D(attackedSquares);
             return;
         }
 
@@ -852,6 +857,7 @@ public class White extends AppCompatActivity {
         selectedPiece = null;
         white_turn = false;
         piece.piece.setVisibility(View.GONE);
+        capturedPieces.add(piece.piece);
 //        allowAllMoves();
 //        Helper.print2D(boardLocations);
 //        System.out.println("Attacked squares \n");
@@ -874,6 +880,7 @@ public class White extends AppCompatActivity {
             pieceLocations[1][i] = -i-1;
             pieceLocations[6][i] = i+1;
             getId_piece.put(-i-1,blackPawns[i]);
+            getId_piece.put(i+1, whitePawns[i]);
         }
 
         whiteKing.location = new Location();
@@ -990,6 +997,14 @@ public class White extends AppCompatActivity {
         getId_piece.put(-14,blackKnight2);
         getId_piece.put(-15,blackRook1);
         getId_piece.put(-16,blackRook2);
+        getId_piece.put(9,whiteKing);
+        getId_piece.put(10,whiteQueen);
+        getId_piece.put(11,whiteBishop1);
+        getId_piece.put(12,whiteBishop2);
+        getId_piece.put(13,whiteKnight1);
+        getId_piece.put(14,whiteKnight2);
+        getId_piece.put(15,whiteRook1);
+        getId_piece.put(16,whiteRook2);
     }
 
 
@@ -1029,7 +1044,7 @@ public class White extends AppCompatActivity {
 //        if(!blackRook1.captured) Helper.updateQueenAndRookAttackSquares(blackRook1, attackedSquares, boardLocations);
 //        if(!blackRook2.captured) Helper.updateQueenAndRookAttackSquares(blackRook2, attackedSquares, boardLocations);
         for(ChessPiece piece: getId_piece.values()){
-            if(!piece.captured) updateAllAttackSquares(piece, boardLocations, attackedSquares);
+            if(piece.id < 0 && !piece.captured) updateAllAttackSquares(piece, boardLocations, attackedSquares);
         }
     }
 
@@ -1048,7 +1063,7 @@ public class White extends AppCompatActivity {
 //        if(!blackRook1.captured) Helper.removeQueenAndRookAttackSquares(blackRook1, attackedSquares, boardLocations);
 //        if(!blackRook2.captured) Helper.removeQueenAndRookAttackSquares(blackRook2, attackedSquares, boardLocations);
         for(ChessPiece piece: getId_piece.values()){
-            if(!piece.captured) removeAllAttackSquares(piece, boardLocations, attackedSquares);
+            if(piece.id < 0 && !piece.captured) removeAllAttackSquares(piece, boardLocations, attackedSquares);
         }
 
     }
@@ -1345,7 +1360,7 @@ public class White extends AppCompatActivity {
         temp_board[old_y][old_x] = 0;
         temp_board[new_y][new_x] = -1;
         updateAttackSquares(temp_board, temp_attack);
-        Helper.print2D(temp_attack);
+//        Helper.print2D(temp_attack);
         if(piece.name.equals("King") && temp_attack[new_y][new_x] == 0) return false;
         if(temp_attack[whiteKing.location.y][whiteKing.location.x] == 0){
             return false;
@@ -1530,6 +1545,7 @@ public class White extends AppCompatActivity {
                         case 3: piece.piece.setImageResource(R.drawable.white_knight); piece.name = whiteKnight1.name; break;
                     }
                     Common.whiteBlack.new_name = piece.name;
+                    getId_piece.put(piece.id, piece);
 
                     if (Common.isTimer) stopWhiteTimer();
 

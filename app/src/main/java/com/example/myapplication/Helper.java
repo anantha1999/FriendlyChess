@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.view.View;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.firebase.database.DataSnapshot;
@@ -7,6 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Vector;
 
 public class Helper {
 
@@ -666,5 +670,10 @@ public class Helper {
         return h+":"+m+":"+s;
     }
 
+    public static void  restoreViews(Vector<View> capturedPieces){
+        for(View piece: capturedPieces){
+            piece.setVisibility(View.VISIBLE);
+        }
+    }
 
 }
