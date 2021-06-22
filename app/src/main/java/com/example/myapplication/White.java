@@ -395,6 +395,8 @@ public class White extends AppCompatActivity {
                                     .setPositiveButton(
                                             "OK",
                                             (dialog, which) -> {
+                                                Intent intent = new Intent(White.this, Home.class);
+                                                startActivity(intent);
                                                 dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
@@ -411,6 +413,9 @@ public class White extends AppCompatActivity {
                                     .setPositiveButton(
                                             "OK",
                                             (dialog, which) -> {
+                                                Intent intent = new Intent(White.this, Home.class);
+                                                startActivity(intent);
+                                                dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
                             alertDialog.show();
@@ -482,6 +487,8 @@ public class White extends AppCompatActivity {
                                         .setPositiveButton(
                                                 "OK",
                                                 (dialog, which) -> {
+                                                    Intent intent = new Intent(White.this, Home.class);
+                                                    startActivity(intent);
                                                     dialog.cancel();
                                                 });
                                 AlertDialog alertDialog = builder.create();
