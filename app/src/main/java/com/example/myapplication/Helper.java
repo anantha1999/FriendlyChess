@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Map;
 import java.util.Vector;
 
 public class Helper {
@@ -559,7 +560,7 @@ public class Helper {
         return isPossibleQueenAndRook(piece, boardLocations, attackedSquares, new_x, new_y);
     }
 
-    public static boolean isPossiblePawn(ChessPiece piece, int[][]boardLocations, int[][] attackedSquares, int new_x, int new_y){
+    public static boolean isPossiblePawn(ChessPiece piece, int[][]boardLocations, int[][] attackedSquares, int new_x, int new_y, Map<Integer, ChessPiece> getId_piece){
         int x = piece.location.x;
         int y = piece.location.y;
 
@@ -570,9 +571,19 @@ public class Helper {
         if(new_x == x && new_y == y-1 && boardLocations[y-1][x] != 1) return true;
         if(new_x == x-1 && new_y == y-1){
             if(boardLocations[new_y][new_x] != 0) return true;
+            if(getId_piece.containsKey(Common.previousMove.id) && getId_piece.get(Common.previousMove.id).name == "Pawn"){
+                if(Common.previousMove.old_x == new_x){
+                    if(Common.previousMove.old_y == 1 && Common.previousMove.new_y == 3) return true;
+                }
+            }
         }
         if(new_x == x+1 && new_y == y-1){
             if(boardLocations[new_y][new_x] != 0) return true;
+            if(getId_piece.containsKey(Common.previousMove.id) && getId_piece.get(Common.previousMove.id).name == "Pawn"){
+                if(Common.previousMove.old_x == new_x){
+                    if(Common.previousMove.old_y == 1 && Common.previousMove.new_y == 3) return true;
+                }
+            }
         }
         return false;
     }

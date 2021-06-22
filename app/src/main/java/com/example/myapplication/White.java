@@ -230,7 +230,12 @@ public class White extends AppCompatActivity {
 
                                     stopAllTimers();// stop the timers
                                     Intent intent = new Intent(White.this, Home.class);
+                                    Common.gameOver = false;
+                                    Common.isTimer = false;
+                                    Common.time_increment = 0;
+                                    Common.time.black = Common.time.white = 0;
                                     startActivity(intent);
+                                    finish();
                                     Common.gameOver = true;
                                 });
                 builder
@@ -280,7 +285,12 @@ public class White extends AppCompatActivity {
                                         "Ok",
                                         (dialog, which) -> {
                                             Intent intent = new Intent(White.this, Home.class);
+                                            Common.gameOver = false;
+                                            Common.isTimer = false;
+                                            Common.time_increment = 0;
+                                            Common.time.black = Common.time.white = 0;
                                             startActivity(intent);
+                                            finish();
                                             dialog.cancel();
                                         });
                         AlertDialog alertDialog = builder.create();
@@ -323,7 +333,12 @@ public class White extends AppCompatActivity {
 
                                             stopAllTimers(); // stop the timers
                                             Intent intent = new Intent(White.this, Home.class);
+                                            Common.gameOver = false;
+                                            Common.isTimer = false;
+                                            Common.time_increment = 0;
+                                            Common.time.black = Common.time.white = 0;
                                             startActivity(intent);
+                                            finish();
                                         });
                         builder
                                 .setNegativeButton(
@@ -367,6 +382,7 @@ public class White extends AppCompatActivity {
                                     Common.time.black = Common.time.white = 0;
                                     Helper.restoreViews(capturedPieces);
                                     startActivity(intent);
+                                    finish();
                                 });
                 builder
                         .setNegativeButton(
@@ -399,7 +415,12 @@ public class White extends AppCompatActivity {
                                             "OK",
                                             (dialog, which) -> {
                                                 Intent intent = new Intent(White.this, Home.class);
+                                                Common.gameOver = false;
+                                                Common.isTimer = false;
+                                                Common.time_increment = 0;
+                                                Common.time.black = Common.time.white = 0;
                                                 startActivity(intent);
+                                                finish();
                                                 dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
@@ -417,7 +438,12 @@ public class White extends AppCompatActivity {
                                             "OK",
                                             (dialog, which) -> {
                                                 Intent intent = new Intent(White.this, Home.class);
+                                                Common.gameOver = false;
+                                                Common.isTimer = false;
+                                                Common.time_increment = 0;
+                                                Common.time.black = Common.time.white = 0;
                                                 startActivity(intent);
+                                                finish();
                                                 dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
@@ -444,6 +470,8 @@ public class White extends AppCompatActivity {
                             }
                             getId_piece.put(blackMove.id, piece);
                         }
+
+
                         //Moves the opponent piece
                         Helper.moveOpponentPiece(blackMove.old_x, blackMove.old_y, blackMove.new_x, blackMove.new_y, boardLocations, attackedSquares, piece, pieceLocations);
 
@@ -467,6 +495,11 @@ public class White extends AppCompatActivity {
                             Helper.moveOpponentPiece(rook.old_x, rook.old_y, rook.new_x, rook.new_y, boardLocations, attackedSquares, piece, pieceLocations);
                         }
 
+                        Common.previousMove.id = piece.id;
+                        Common.previousMove.old_x = blackMove.old_x;
+                        Common.previousMove.old_y = blackMove.old_y;
+                        Common.previousMove.new_x = blackMove.new_x;
+                        Common.previousMove.new_y = blackMove.new_y;
                         //Finally updates the attack squares after the opponent piece is moved
                         updateAttackSquares(boardLocations, attackedSquares);
 
@@ -491,7 +524,12 @@ public class White extends AppCompatActivity {
                                                 "OK",
                                                 (dialog, which) -> {
                                                     Intent intent = new Intent(White.this, Home.class);
+                                                    Common.gameOver = false;
+                                                    Common.isTimer = false;
+                                                    Common.time_increment = 0;
+                                                    Common.time.black = Common.time.white = 0;
                                                     startActivity(intent);
+                                                    finish();
                                                     dialog.cancel();
                                                 });
                                 AlertDialog alertDialog = builder.create();
@@ -1122,6 +1160,21 @@ public class White extends AppCompatActivity {
 
 
             Common.whiteBlack.time = Common.time.white; //Update white time in firebase
+
+            if(piece.name.equals("Pawn")){
+                if(getId_piece.containsKey(Common.previousMove.id) && getId_piece.get(Common.previousMove.id).name.equals("Pawn")){
+                    if(new_x == Common.previousMove.new_x){
+                        if(Common.previousMove.old_y == 1 && Common.previousMove.new_y == 3){
+                            ChessPiece enpassentPiece = getId_piece.get(Common.previousMove.id);
+                            enpassentPiece.piece.setVisibility(View.GONE);
+                            enpassentPiece.captured = true;
+                            Common.whiteBlack.capturedPiece_id = (Common.previousMove.id > 0)? (9-Common.previousMove.id):(-9-Common.previousMove.id);
+                            capturedPieces.add(enpassentPiece.piece);
+                        }
+                    }
+                }
+            }
+
             game.child("white").setValue(Common.whiteBlack);
             updateAttackSquares(boardLocations, attackedSquares);
             if (attackedSquares[whiteKing.location.y][whiteKing.location.x] == 0) {
@@ -1141,7 +1194,7 @@ public class White extends AppCompatActivity {
             case "Bishop": possible = Helper.isPossibleBishop(piece, boardLocations, attackedSquares, new_x, new_y); break;
             case "Knight": possible = Helper.isPossibleKnight(piece, boardLocations, attackedSquares, new_x, new_y); break;
             case "Rook" : possible = Helper.isPossibleRook(piece, boardLocations, attackedSquares, new_x, new_y); break;
-            case "Pawn" : possible = Helper.isPossiblePawn(piece, boardLocations, attackedSquares, new_x, new_y); break;
+            case "Pawn" : possible = Helper.isPossiblePawn(piece, boardLocations, attackedSquares, new_x, new_y, getId_piece); break;
         }
         return possible;
     }
@@ -1186,19 +1239,11 @@ public class White extends AppCompatActivity {
     }
 
     private boolean isCheckmate(){
-        boolean checkmate = true;
-        if(!whiteKing.captured && checkMovesPossible(whiteKing)) checkmate = false;
-        if(!whiteQueen.captured && checkMovesPossible(whiteQueen)) checkmate = false;
-        if(!whiteBishop1.captured && checkMovesPossible(whiteBishop1)) checkmate = false;
-        if(!whiteBishop2.captured && checkMovesPossible(whiteBishop2)) checkmate = false;
-        if(!whiteKnight1.captured && checkMovesPossible(whiteKnight1)) checkmate = false;
-        if(!whiteKnight2.captured && checkMovesPossible(whiteKnight2)) checkmate = false;
-        if(!whiteRook1.captured && checkMovesPossible(whiteRook1)) checkmate = false;
-        if(!whiteRook2.captured && checkMovesPossible(whiteRook2)) checkmate = false;
-        for(int i=0; i<8; ++i){
-            if(!whitePawns[i].captured && checkMovesPossible(whitePawns[i])) checkmate = false;
-        }
-
+            boolean checkmate = true;
+            for(ChessPiece piece:getId_piece.values()){
+                if(piece.id > 0 && !piece.captured) checkmate = !checkMovesPossible(piece);
+                if(!checkmate) return checkmate;
+            }
         return checkmate;
     }
 
@@ -1211,6 +1256,7 @@ public class White extends AppCompatActivity {
         ++tempX;
         ++tempY;
         while(tempX < 8 && tempY < 8){
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempX;
@@ -1222,7 +1268,7 @@ public class White extends AppCompatActivity {
         --tempX;
         ++tempY;
         while(tempX >= 0 && tempY < 8){
-
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempX;
@@ -1234,7 +1280,7 @@ public class White extends AppCompatActivity {
         --tempX;
         --tempY;
         while(tempX >= 0 && tempY >= 0){
-
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempX;
@@ -1247,7 +1293,7 @@ public class White extends AppCompatActivity {
         --tempY;
         while(tempX < 8 && tempY >= 0){
 //            System.out.println("Bishop - NewX = "+tempX+" NewY = "+tempY+" x = "+x+" y = "+y+" boardLocation[x][y] = "+boardLocations[x][y]);
-
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempX;
@@ -1264,6 +1310,7 @@ public class White extends AppCompatActivity {
         int tempY = y;
 
         while(tempX < 8){
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempX;
@@ -1272,6 +1319,7 @@ public class White extends AppCompatActivity {
         tempX = x;
         ++tempY;
         while(tempY < 8){
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempY;
@@ -1280,6 +1328,7 @@ public class White extends AppCompatActivity {
         tempY = y;
         --tempX;
         while(tempX >= 0){
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempX;
@@ -1288,6 +1337,7 @@ public class White extends AppCompatActivity {
         tempX = x;
         --tempY;
         while(tempY >= 0){
+            if((Common.previousMove.new_x == tempX && Common.previousMove.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempY;
@@ -1303,35 +1353,35 @@ public class White extends AppCompatActivity {
         int y = piece.location.y;
 
         if(x+2 < 8 && y+1 < 8){
-            if(boardLocations[y+1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y+1)) return true;
+            if((boardLocations[y+1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y+1)) || (Common.previousMove.new_x == x+2 && Common.previousMove.new_y == y+1)) return true;
         }
 
         if(x+2 < 8 && y-1 >= 0){
-            if(boardLocations[y-1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y-1)) return true;
+            if((boardLocations[y-1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y-1)) || (Common.previousMove.new_x == x+2 && Common.previousMove.new_y == y-1)) return true;
         }
 
         if(x-2 >= 0 && y+1 < 8){
-            if(boardLocations[y+1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y+1)) return true;
+            if((boardLocations[y+1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y+1))|| (Common.previousMove.new_x == x-2 && Common.previousMove.new_y == y+1)) return true;
         }
 
         if(x-2 >= 0 && y-1 >= 0){
-            if(boardLocations[y-1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y-1)) return true;
+            if((boardLocations[y-1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y-1)) || (Common.previousMove.new_x == x-2 && Common.previousMove.new_y == y-1)) return true;
         }
 
         if(x+1 < 8 && y+2 < 8){
-            if(boardLocations[y+2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y+2)) return true;
+            if((boardLocations[y+2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y+2)) || (Common.previousMove.new_x == x+1 && Common.previousMove.new_y == y+2)) return true;
         }
 
         if(x+1 < 8 && y-2 >= 0){
-            if(boardLocations[y-2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y-2)) return true;
+            if((boardLocations[y-2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y-2)) || (Common.previousMove.new_x == x+1 && Common.previousMove.new_y == y-2)) return true;
         }
 
         if(x-1 >= 0 && y+2 < 8){
-            if(boardLocations[y+2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y+2)) return true;
+            if((boardLocations[y+2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y+2)) || (Common.previousMove.new_x == x-1 && Common.previousMove.new_y == y+2)) return true;
         }
 
         if(x-1 >= 0 && y-2 >= 0){
-            if(boardLocations[y-2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y-2)) return true;
+            if((boardLocations[y-2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y-2)) || (Common.previousMove.new_x == x-1 && Common.previousMove.new_y == y-2)) return true;
         }
         return false;
     }
@@ -1345,10 +1395,10 @@ public class White extends AppCompatActivity {
         }
         if(y-1 >= 0 && boardLocations[y-1][x] == 0 && !isUnderCheckAfterMove(piece, x, y, x, y-1)) return true;
         if(y-1 >= 0 && x-1 >= 0 && boardLocations[y-1][x-1] == 1){
-            if(!isUnderCheckAfterMove(piece,x,y,x-1,y-1)) return true;
+            if(!isUnderCheckAfterMove(piece,x,y,x-1,y-1) || (Common.previousMove.new_x == x-1 && Common.previousMove.new_y == y-1)) return true;
         }
         if(y-1 >=0 && x+1 < 8 && boardLocations[y-1][x+1] == 1){
-            if(!isUnderCheckAfterMove(piece,x,y,x+1,y-1)) return true;
+            if(!isUnderCheckAfterMove(piece,x,y,x+1,y-1) || (Common.previousMove.new_x == x+1 && Common.previousMove.new_y == y-1)) return true;
         }
         return false;
     }

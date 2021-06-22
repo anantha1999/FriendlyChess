@@ -188,10 +188,12 @@ public class Create extends AppCompatActivity {
         if(playerWhite){
             Intent intent = new Intent(this, White.class);
             startActivity(intent);
+            finish();
         }
         else{
             Intent intent = new Intent(this, Black.class);
             startActivity(intent);
+            finish();
         }
     }
 

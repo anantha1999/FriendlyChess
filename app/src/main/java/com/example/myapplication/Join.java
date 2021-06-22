@@ -49,11 +49,13 @@ public class Join extends AppCompatActivity {
             System.out.println("Inside white");
             Intent intent = new Intent(this, White.class);
             startActivity(intent);
+            finish();
         }
         else{
             System.out.println("Inside black");
             Intent intent = new Intent(this, Black.class);
             startActivity(intent);
+            finish();
         }
     }
 

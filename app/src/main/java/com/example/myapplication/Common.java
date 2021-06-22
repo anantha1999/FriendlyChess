@@ -9,4 +9,5 @@ public class Common {
     public static boolean underCheck = false;
     public static boolean isTimer = false;
     public static boolean gameOver = false;
+    public static WhiteBlack previousMove = new WhiteBlack();
 }
