@@ -953,15 +953,6 @@ public class White extends AppCompatActivity {
         whiteRook1.name = blackRook1.name = "Rook";
         whiteRook2.name = blackRook2.name = "Rook";
 
-        getId_piece.put(-9,blackKing);
-        getId_piece.put(-10,blackQueen);
-        getId_piece.put(-11,blackBishop1);
-        getId_piece.put(-12,blackBishop2);
-        getId_piece.put(-13,blackKnight1);
-        getId_piece.put(-14,blackKnight2);
-        getId_piece.put(-15,blackRook1);
-        getId_piece.put(-16,blackRook2);
-
         whiteKing.id = 9;
         blackKing.id = -9;
         whiteQueen.id = 10;
@@ -978,37 +969,75 @@ public class White extends AppCompatActivity {
         blackRook1.id = -15;
         whiteRook2.id = 16;
         blackRook2.id = -16;
+
+        getId_piece.put(-9,blackKing);
+        getId_piece.put(-10,blackQueen);
+        getId_piece.put(-11,blackBishop1);
+        getId_piece.put(-12,blackBishop2);
+        getId_piece.put(-13,blackKnight1);
+        getId_piece.put(-14,blackKnight2);
+        getId_piece.put(-15,blackRook1);
+        getId_piece.put(-16,blackRook2);
+    }
+
+
+    private void updateAllAttackSquares(ChessPiece piece, int[][] boardLocations, int[][] attackedSquares){
+        switch (piece.name){
+            case "King": Helper.updateKingAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Queen":
+            case "Rook": Helper.updateQueenAndRookAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Bishop": Helper.updateBishopAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Knight": Helper.updateKnightAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Pawn": Helper.updatePawnAttackSquares(piece, attackedSquares, boardLocations); break;
+        }
+    }
+
+    private void removeAllAttackSquares(ChessPiece piece, int[][] boardLocations, int[][] attackedSquares){
+        switch (piece.name){
+            case "King": Helper.removeKingAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Queen":
+            case "Rook": Helper.removeQueenAndRookAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Bishop": Helper.removeBishopAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Knight": Helper.removeKnightAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Pawn": Helper.removePawnAttackSquares(piece, attackedSquares, boardLocations); break;
+        }
     }
 
 
     private void updateAttackSquares(int[][] boardLocations, int[][] attackedSquares){
-        for(int i=0; i<8; ++i){
-            if(!blackPawns[i].captured) Helper.updatePawnAttackSquares(blackPawns[i], attackedSquares, boardLocations);
+//        for(int i=0; i<8; ++i){
+//            if(!blackPawns[i].captured) Helper.updatePawnAttackSquares(blackPawns[i], attackedSquares, boardLocations);
+//        }
+//        if(!blackKing.captured) Helper.updateKingAttackSquares(blackKing, attackedSquares, boardLocations);
+//        if(!blackQueen.captured) Helper.updateQueenAndRookAttackSquares(blackQueen, attackedSquares, boardLocations);
+//        if(!blackBishop1.captured) Helper.updateBishopAttackSquares(blackBishop1, attackedSquares, boardLocations);
+//        if(!blackBishop2.captured) Helper.updateBishopAttackSquares(blackBishop2, attackedSquares, boardLocations);
+//        if(!blackKnight1.captured) Helper.updateKnightAttackSquares(blackKnight1, attackedSquares, boardLocations);
+//        if(!blackKnight2.captured) Helper.updateKnightAttackSquares(blackKnight2, attackedSquares, boardLocations);
+//        if(!blackRook1.captured) Helper.updateQueenAndRookAttackSquares(blackRook1, attackedSquares, boardLocations);
+//        if(!blackRook2.captured) Helper.updateQueenAndRookAttackSquares(blackRook2, attackedSquares, boardLocations);
+        for(ChessPiece piece: getId_piece.values()){
+            if(!piece.captured) updateAllAttackSquares(piece, boardLocations, attackedSquares);
         }
-        if(!blackKing.captured) Helper.updateKingAttackSquares(blackKing, attackedSquares, boardLocations);
-        if(!blackQueen.captured) Helper.updateQueenAndRookAttackSquares(blackQueen, attackedSquares, boardLocations);
-        if(!blackBishop1.captured) Helper.updateBishopAttackSquares(blackBishop1, attackedSquares, boardLocations);
-        if(!blackBishop2.captured) Helper.updateBishopAttackSquares(blackBishop2, attackedSquares, boardLocations);
-        if(!blackKnight1.captured) Helper.updateKnightAttackSquares(blackKnight1, attackedSquares, boardLocations);
-        if(!blackKnight2.captured) Helper.updateKnightAttackSquares(blackKnight2, attackedSquares, boardLocations);
-        if(!blackRook1.captured) Helper.updateQueenAndRookAttackSquares(blackRook1, attackedSquares, boardLocations);
-        if(!blackRook2.captured) Helper.updateQueenAndRookAttackSquares(blackRook2, attackedSquares, boardLocations);
-
     }
 
 
+
     private void removeAttackSquares(int[][] boardLocations, int[][] attackedSquares){
-        for(int i=0; i<8; ++i){
-            if(!blackPawns[i].captured) Helper.removePawnAttackSquares(blackPawns[i], attackedSquares, boardLocations);
+//        for(int i=0; i<8; ++i){
+//            if(!blackPawns[i].captured) Helper.removePawnAttackSquares(blackPawns[i], attackedSquares, boardLocations);
+//        }
+//        if(!blackKing.captured) Helper.removeKingAttackSquares(blackKing, attackedSquares, boardLocations);
+//        if(!blackQueen.captured) Helper.removeQueenAndRookAttackSquares(blackQueen, attackedSquares, boardLocations);
+//        if(!blackBishop1.captured) Helper.removeBishopAttackSquares(blackBishop1, attackedSquares, boardLocations);
+//        if(!blackBishop2.captured) Helper.removeBishopAttackSquares(blackBishop2, attackedSquares, boardLocations);
+//        if(!blackKnight1.captured) Helper.removeKnightAttackSquares(blackKnight1, attackedSquares, boardLocations);
+//        if(!blackKnight2.captured) Helper.removeKnightAttackSquares(blackKnight2, attackedSquares, boardLocations);
+//        if(!blackRook1.captured) Helper.removeQueenAndRookAttackSquares(blackRook1, attackedSquares, boardLocations);
+//        if(!blackRook2.captured) Helper.removeQueenAndRookAttackSquares(blackRook2, attackedSquares, boardLocations);
+        for(ChessPiece piece: getId_piece.values()){
+            if(!piece.captured) removeAllAttackSquares(piece, boardLocations, attackedSquares);
         }
-        if(!blackKing.captured) Helper.removeKingAttackSquares(blackKing, attackedSquares, boardLocations);
-        if(!blackQueen.captured) Helper.removeQueenAndRookAttackSquares(blackQueen, attackedSquares, boardLocations);
-        if(!blackBishop1.captured) Helper.removeBishopAttackSquares(blackBishop1, attackedSquares, boardLocations);
-        if(!blackBishop2.captured) Helper.removeBishopAttackSquares(blackBishop2, attackedSquares, boardLocations);
-        if(!blackKnight1.captured) Helper.removeKnightAttackSquares(blackKnight1, attackedSquares, boardLocations);
-        if(!blackKnight2.captured) Helper.removeKnightAttackSquares(blackKnight2, attackedSquares, boardLocations);
-        if(!blackRook1.captured) Helper.removeQueenAndRookAttackSquares(blackRook1, attackedSquares, boardLocations);
-        if(!blackRook2.captured) Helper.removeQueenAndRookAttackSquares(blackRook2, attackedSquares, boardLocations);
 
     }
 
@@ -1296,6 +1325,7 @@ public class White extends AppCompatActivity {
         temp_board[old_y][old_x] = 0;
         temp_board[new_y][new_x] = -1;
         updateAttackSquares(temp_board, temp_attack);
+        Helper.print2D(temp_attack);
         if(piece.name.equals("King") && temp_attack[new_y][new_x] == 0) return false;
         if(temp_attack[whiteKing.location.y][whiteKing.location.x] == 0){
             return false;
@@ -1498,5 +1528,12 @@ public class White extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private ChessPiece getPiece(int id, int old_id){
+        if(getId_piece.containsKey(id)){
+            return getId_piece.get(id);
+        }
+        return getId_piece.get(old_id);
     }
 }

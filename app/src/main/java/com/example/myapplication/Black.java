@@ -964,15 +964,6 @@ public class Black extends AppCompatActivity {
         blackRook1.name = whiteRook1.name = "Rook";
         blackRook2.name = whiteRook2.name = "Rook";
 
-        getId_piece.put(9,whiteKing);
-        getId_piece.put(10,whiteQueen);
-        getId_piece.put(11,whiteBishop1);
-        getId_piece.put(12,whiteBishop2);
-        getId_piece.put(13,whiteKnight1);
-        getId_piece.put(14,whiteKnight2);
-        getId_piece.put(15,whiteRook1);
-        getId_piece.put(16,whiteRook2);
-
         whiteKing.id = 9;
         blackKing.id = -9;
         whiteQueen.id = 10;
@@ -989,36 +980,74 @@ public class Black extends AppCompatActivity {
         blackRook1.id = -15;
         whiteRook2.id = 16;
         blackRook2.id = -16;
+
+        getId_piece.put(9,whiteKing);
+        getId_piece.put(10,whiteQueen);
+        getId_piece.put(11,whiteBishop1);
+        getId_piece.put(12,whiteBishop2);
+        getId_piece.put(13,whiteKnight1);
+        getId_piece.put(14,whiteKnight2);
+        getId_piece.put(15,whiteRook1);
+        getId_piece.put(16,whiteRook2);
+    }
+
+    private void updateAllAttackSquares(ChessPiece piece, int[][] boardLocations, int[][] attackedSquares){
+        switch (piece.name){
+            case "King": Helper.updateKingAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Queen":
+            case "Rook": Helper.updateQueenAndRookAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Bishop": Helper.updateBishopAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Knight": Helper.updateKnightAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Pawn": Helper.updatePawnAttackSquares(piece, attackedSquares, boardLocations); break;
+        }
+    }
+
+    private void removeAllAttackSquares(ChessPiece piece, int[][] boardLocations, int[][] attackedSquares){
+        switch (piece.name){
+            case "King": Helper.removeKingAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Queen":
+            case "Rook": Helper.removeQueenAndRookAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Bishop": Helper.removeBishopAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Knight": Helper.removeKnightAttackSquares(piece, attackedSquares, boardLocations); break;
+            case "Pawn": Helper.removePawnAttackSquares(piece, attackedSquares, boardLocations); break;
+        }
     }
 
 
     private void updateAttackSquares(int[][] boardLocations, int[][] attackedSquares){
-        for(int i=0; i<8; ++i){
-            if(!whitePawns[i].captured) Helper.updatePawnAttackSquares(whitePawns[i], attackedSquares, boardLocations);
+//        for(int i=0; i<8; ++i){
+//            if(!whitePawns[i].captured) Helper.updatePawnAttackSquares(whitePawns[i], attackedSquares, boardLocations);
+//        }
+//        if(!whiteKing.captured) Helper.updateKingAttackSquares(whiteKing, attackedSquares, boardLocations);
+//        if(!whiteQueen.captured) Helper.updateQueenAndRookAttackSquares(whiteQueen, attackedSquares, boardLocations);
+//        if(!whiteBishop1.captured) Helper.updateBishopAttackSquares(whiteBishop1, attackedSquares, boardLocations);
+//        if(!whiteBishop2.captured) Helper.updateBishopAttackSquares(whiteBishop2, attackedSquares, boardLocations);
+//        if(!whiteKnight1.captured) Helper.updateKnightAttackSquares(whiteKnight1, attackedSquares, boardLocations);
+//        if(!whiteKnight2.captured) Helper.updateKnightAttackSquares(whiteKnight2, attackedSquares, boardLocations);
+//        if(!whiteRook1.captured) Helper.updateQueenAndRookAttackSquares(whiteRook1, attackedSquares, boardLocations);
+//        if(!whiteRook2.captured) Helper.updateQueenAndRookAttackSquares(whiteRook2, attackedSquares, boardLocations);
+        for(ChessPiece piece: getId_piece.values()){
+//            print(piece.name+" "+piece.id);
+            if(!piece.captured) updateAllAttackSquares(piece, boardLocations, attackedSquares);
         }
-        if(!whiteKing.captured) Helper.updateKingAttackSquares(whiteKing, attackedSquares, boardLocations);
-        if(!whiteQueen.captured) Helper.updateQueenAndRookAttackSquares(whiteQueen, attackedSquares, boardLocations);
-        if(!whiteBishop1.captured) Helper.updateBishopAttackSquares(whiteBishop1, attackedSquares, boardLocations);
-        if(!whiteBishop2.captured) Helper.updateBishopAttackSquares(whiteBishop2, attackedSquares, boardLocations);
-        if(!whiteKnight1.captured) Helper.updateKnightAttackSquares(whiteKnight1, attackedSquares, boardLocations);
-        if(!whiteKnight2.captured) Helper.updateKnightAttackSquares(whiteKnight2, attackedSquares, boardLocations);
-        if(!whiteRook1.captured) Helper.updateQueenAndRookAttackSquares(whiteRook1, attackedSquares, boardLocations);
-        if(!whiteRook2.captured) Helper.updateQueenAndRookAttackSquares(whiteRook2, attackedSquares, boardLocations);
-
     }
 
     private void removeAttackSquares(int[][] boardLocations, int[][] attackedSquares){
-        for(int i=0; i<8; ++i){
-            if(!whitePawns[i].captured) Helper.removePawnAttackSquares(whitePawns[i], attackedSquares, boardLocations);
+//        for(int i=0; i<8; ++i){
+//            if(!whitePawns[i].captured) Helper.removePawnAttackSquares(whitePawns[i], attackedSquares, boardLocations);
+//        }
+//        if(!whiteKing.captured) Helper.removeKingAttackSquares(whiteKing, attackedSquares, boardLocations);
+//        if(!whiteQueen.captured) Helper.removeQueenAndRookAttackSquares(whiteQueen, attackedSquares, boardLocations);
+//        if(!whiteBishop1.captured) Helper.removeBishopAttackSquares(whiteBishop1, attackedSquares, boardLocations);
+//        if(!whiteBishop2.captured) Helper.removeBishopAttackSquares(whiteBishop2, attackedSquares, boardLocations);
+//        if(!whiteKnight1.captured) Helper.removeKnightAttackSquares(whiteKnight1, attackedSquares, boardLocations);
+//        if(!whiteKnight2.captured) Helper.removeKnightAttackSquares(whiteKnight2, attackedSquares, boardLocations);
+//        if(!whiteRook1.captured) Helper.removeQueenAndRookAttackSquares(whiteRook1, attackedSquares, boardLocations);
+//        if(!whiteRook2.captured) Helper.removeQueenAndRookAttackSquares(whiteRook2, attackedSquares, boardLocations);
+        for(ChessPiece piece: getId_piece.values()){
+//            print(piece.name+" "+piece.id);
+            if(!piece.captured) removeAllAttackSquares(piece, boardLocations, attackedSquares);
         }
-        if(!whiteKing.captured) Helper.removeKingAttackSquares(whiteKing, attackedSquares, boardLocations);
-        if(!whiteQueen.captured) Helper.removeQueenAndRookAttackSquares(whiteQueen, attackedSquares, boardLocations);
-        if(!whiteBishop1.captured) Helper.removeBishopAttackSquares(whiteBishop1, attackedSquares, boardLocations);
-        if(!whiteBishop2.captured) Helper.removeBishopAttackSquares(whiteBishop2, attackedSquares, boardLocations);
-        if(!whiteKnight1.captured) Helper.removeKnightAttackSquares(whiteKnight1, attackedSquares, boardLocations);
-        if(!whiteKnight2.captured) Helper.removeKnightAttackSquares(whiteKnight2, attackedSquares, boardLocations);
-        if(!whiteRook1.captured) Helper.removeQueenAndRookAttackSquares(whiteRook1, attackedSquares, boardLocations);
-        if(!whiteRook2.captured) Helper.removeQueenAndRookAttackSquares(whiteRook2, attackedSquares, boardLocations);
 
     }
 
@@ -1320,6 +1349,7 @@ public class Black extends AppCompatActivity {
         temp_board[old_y][old_x] = 0;
         temp_board[new_y][new_x] = -1;
         updateAttackSquares(temp_board, temp_attack);
+        Helper.print2D(temp_attack);
         if(piece.name.equals("King") && temp_attack[new_y][new_x] == 0) return false;
         if(temp_attack[blackKing.location.y][blackKing.location.x] == 0){
             return false;
@@ -1494,7 +1524,8 @@ public class Black extends AppCompatActivity {
                     else Common.whiteBlack.id = (piece.id > 0) ? piece.id + 1 : piece.id - 1;
 
                     Common.whiteBlack.old_id = Common.whiteBlack.id;
-                    Common.whiteBlack.id = piece.id = new_ids++;
+                    Common.whiteBlack.id = piece.id = -new_ids;
+                    new_ids++;
 
 
                     switch(which){
@@ -1522,5 +1553,12 @@ public class Black extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private ChessPiece getPiece(int id, int old_id){
+        if(getId_piece.containsKey(id)){
+            return getId_piece.get(id);
+        }
+        return getId_piece.get(old_id);
     }
 }
