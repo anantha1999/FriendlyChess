@@ -338,6 +338,8 @@ public class Black extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Common.isTimer = snapshot.getValue(Boolean.class);
+                whiteClock.setVisibility(View.VISIBLE);
+                blackClock.setVisibility(View.VISIBLE);
             }
 
             @Override
