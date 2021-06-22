@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -122,7 +121,8 @@ public class Create extends AppCompatActivity {
             if(!flag) {
                 progressBar.setVisibility(View.VISIBLE);
                 waiting.setVisibility(View.VISIBLE);
-                Common.code = generateCode();
+                Random random = new Random();
+                Common.code = generateCode()+random.nextInt(10000);
                 code = findViewById(R.id.code);
                 code.setText(Common.code);
                 DatabaseReference dbRef = database.getReference();
@@ -161,10 +161,6 @@ public class Create extends AppCompatActivity {
         });
 
 
-
-//        imageView = findViewById(R.id.imageView);
-//        imageView.setBackgroundResource(R.drawable.ic_loading);
-//        loadingAnimation = (AnimationDrawable) imageView.getBackground();
         whiteButton = findViewById(R.id.white);
         blackButton = findViewById(R.id.black);
         whiteText = findViewById(R.id.whiteText);
@@ -186,7 +182,6 @@ public class Create extends AppCompatActivity {
         copyButton.setOnClickListener(v -> {
             copyCodeToClipBoard();
         });
-//        imageView.setBackground(null);
     }
 
     private void changeIntent(){
@@ -202,65 +197,49 @@ public class Create extends AppCompatActivity {
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-//        loadingAnimation.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void changeWhiteButtonColour(){
         playerWhite = true;
-//        database.getReference().child(Common.code).child("colour").setValue(0);
         if(white){
             return;
         }
         else if(!white && !black){
             white = true;
             black = false;
-            int whiteColor = Color.parseColor("#ffffff");
-            int dark = Color.parseColor("#141313");
-//            whiteButton.setBackgroundColor(dark);
             whiteButton.setBackground(getDrawable(R.drawable.circleshadowon));
-//            whiteText.setTextColor(whiteColor);
+
         }
         else if(!white && black){
             black = false;
             white = true;
-            int whiteColor = Color.parseColor("#ffffff");
-            int blackColor = Color.parseColor("#000000");
-            int dark = Color.parseColor("#141313");
-            int light = Color.parseColor("#D2CECE");
             whiteButton.setBackground(getDrawable(R.drawable.circleshadowon));
-//            whiteText.setTextColor(whiteColor);
+
             blackButton.setBackground(getDrawable(R.drawable.circleshadowoff));
-//            blackText.setTextColor(blackColor);
+
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void changeBlackButtonColour(){
         playerWhite = false;
-//        database.getReference().child(Common.code).child("colour").setValue(1);
         if(black){
             return;
         }
         else if(!white && !black){
             black = true;
             white = false;
-            int whiteColor = Color.parseColor("#ffffff");
-            int dark = Color.parseColor("#141313");
             blackButton.setBackground(getDrawable(R.drawable.circleshadowon));
-//            blackText.setTextColor(whiteColor);
+
         }
         else if(!black && white){
             white = false;
             black = true;
-            int whiteColor = Color.parseColor("#ffffff");
-            int blackColor = Color.parseColor("#000000");
-            int dark = Color.parseColor("#141313");
-            int light = Color.parseColor("#D2CECE");
             blackButton.setBackground(getDrawable(R.drawable.circleshadowon));
-//            blackText.setTextColor(whiteColor);
+
             whiteButton.setBackground(getDrawable(R.drawable.circleshadowoff));
-//            whiteText.setTextColor(blackColor);
+
         }
     }
 
@@ -278,7 +257,7 @@ public class Create extends AppCompatActivity {
     private String generateCode() {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
+        int targetStringLength = 7;
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {

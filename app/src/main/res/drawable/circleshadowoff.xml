@@ -14,7 +14,7 @@
         android:top="10dp"
         android:bottom="10dp">
         <shape android:shape="rectangle">
-            <solid android:color="#4C4C4C"/>//Background Color
+            <solid android:color="#303030"/>//Background Color
         </shape>
     </item>
 </layer-list>
