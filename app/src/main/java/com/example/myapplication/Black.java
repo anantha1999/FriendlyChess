@@ -218,6 +218,8 @@ public class Black extends AppCompatActivity {
                                     Common.gameOver = true;
 
                                     stopAllTimers();
+                                    Intent intent = new Intent(Black.this, Home.class);
+                                    startActivity(intent);
                                 });
                 builder
                         .setNegativeButton(
@@ -264,6 +266,8 @@ public class Black extends AppCompatActivity {
                                 .setPositiveButton(
                                         "Ok",
                                         (dialog, which) -> {
+                                            Intent intent = new Intent(Black.this, Home.class);
+                                            startActivity(intent);
                                             dialog.cancel();
                                         });
                         AlertDialog alertDialog = builder.create();
@@ -305,6 +309,8 @@ public class Black extends AppCompatActivity {
                                             game.child("draw").setValue(1);
                                             Common.gameOver = true;
                                             stopAllTimers(); // stop the timers
+                                            Intent intent = new Intent(Black.this, Home.class);
+                                            startActivity(intent);
                                         });
                         builder
                                 .setNegativeButton(
@@ -341,7 +347,7 @@ public class Black extends AppCompatActivity {
         });
 
         leave.setOnClickListener(v -> {
-            if(Common.gameOver){
+
                 AlertDialog.Builder builder
                         = new AlertDialog
                         .Builder(this);
@@ -368,25 +374,7 @@ public class Black extends AppCompatActivity {
                                 (dialog, which) -> dialog.cancel());
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-            }
-            else{
-                AlertDialog.Builder builder
-                        = new AlertDialog
-                        .Builder(this);
 
-                builder.setMessage("Match is still in progress");
-                builder.setTitle("");
-                builder.setCancelable(false);
-
-                builder
-                        .setPositiveButton(
-                                "OK",
-                                (dialog, which) -> {
-                                    dialog.cancel();
-                                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
         });
 
         //Listens for opponent moves
@@ -411,6 +399,8 @@ public class Black extends AppCompatActivity {
                                     .setPositiveButton(
                                             "OK",
                                             (dialog, which) -> {
+                                                Intent intent = new Intent(Black.this, Home.class);
+                                                startActivity(intent);
                                                 dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
@@ -427,6 +417,9 @@ public class Black extends AppCompatActivity {
                                     .setPositiveButton(
                                             "OK",
                                             (dialog, which) -> {
+                                                Intent intent = new Intent(Black.this, Home.class);
+                                                startActivity(intent);
+                                                dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
                             alertDialog.show();
@@ -493,6 +486,8 @@ public class Black extends AppCompatActivity {
                                         .setPositiveButton(
                                                 "OK",
                                                 (dialog, which) -> {
+                                                    Intent intent = new Intent(Black.this, Home.class);
+                                                    startActivity(intent);
                                                     dialog.cancel();
                                                 });
                                 AlertDialog alertDialog = builder.create();

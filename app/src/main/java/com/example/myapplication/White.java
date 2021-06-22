@@ -222,7 +222,8 @@ public class White extends AppCompatActivity {
                                     game.child("white").child("isGameOver").setValue(-1);
 
                                     stopAllTimers();// stop the timers
-
+                                    Intent intent = new Intent(White.this, Home.class);
+                                    startActivity(intent);
                                     Common.gameOver = true;
                                 });
                 builder
@@ -271,6 +272,8 @@ public class White extends AppCompatActivity {
                                 .setPositiveButton(
                                         "Ok",
                                         (dialog, which) -> {
+                                            Intent intent = new Intent(White.this, Home.class);
+                                            startActivity(intent);
                                             dialog.cancel();
                                         });
                         AlertDialog alertDialog = builder.create();
@@ -312,6 +315,8 @@ public class White extends AppCompatActivity {
                                             Common.gameOver = true;
 
                                             stopAllTimers(); // stop the timers
+                                            Intent intent = new Intent(White.this, Home.class);
+                                            startActivity(intent);
                                         });
                         builder
                                 .setNegativeButton(
@@ -335,7 +340,7 @@ public class White extends AppCompatActivity {
         });
 
         leave.setOnClickListener(v -> {
-            if(Common.gameOver){
+
                 AlertDialog.Builder builder
                         = new AlertDialog
                         .Builder(this);
@@ -362,25 +367,6 @@ public class White extends AppCompatActivity {
                                 (dialog, which) -> dialog.cancel());
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-            }
-            else{
-                AlertDialog.Builder builder
-                        = new AlertDialog
-                        .Builder(this);
-
-                builder.setMessage("Match is still in progress");
-                builder.setTitle("");
-                builder.setCancelable(false);
-
-                builder
-                        .setPositiveButton(
-                                "OK",
-                                (dialog, which) -> {
-                                    dialog.cancel();
-                                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
         });
 
         //Listens for opponent moves
