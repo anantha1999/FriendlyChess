@@ -21,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class White extends AppCompatActivity {
 
     private ImageView board;
@@ -102,6 +105,12 @@ public class White extends AppCompatActivity {
     private boolean draw_flag = false;
 
     private boolean request_flag = false;
+
+    private Map<Integer, ChessPiece> getId_piece = new HashMap<>();
+
+    private int new_ids = 17;
+
+    private int opponent_ids = 16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1417,5 +1426,67 @@ public class White extends AppCompatActivity {
         catch (Exception e){
 
         }
+    }
+
+    private void pawnPromotion(ChessPiece piece, int new_x, int new_y){
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(this);
+
+        builder.setTitle("Promote to");
+        builder.setCancelable(false);
+        builder
+                .setItems(R.array.promote, (dialog, which) -> {
+                    // The 'which' argument contains the index position
+                    // of the selected item
+                    DatabaseReference game = database.child(Common.code);
+                    Common.whiteBlack.old_x = (7 - piece.location.x);
+                    Common.whiteBlack.old_y = (7 - piece.location.y);
+                    boardLocations[piece.location.y][piece.location.x] = 0;
+                    boardLocations[new_y][new_x] = -1;
+
+                    piece.location.x = new_x;
+                    piece.location.y = new_y;
+
+                    Common.whiteBlack.new_x = (7 - piece.location.x);
+                    Common.whiteBlack.new_y = (7 - piece.location.y);
+
+                    if (piece.name.equals("King") || piece.name.equals("Queen"))
+                        Common.whiteBlack.id = piece.id;
+                    else if (piece.name.equals("Pawn"))
+                        Common.whiteBlack.id = (piece.id > 0) ? (9 - piece.id) : (-9 - piece.id);
+                    else if (piece.id % 2 == 0)
+                        Common.whiteBlack.id = (piece.id > 0) ? piece.id - 1 : piece.id + 1;
+                    else Common.whiteBlack.id = (piece.id > 0) ? piece.id + 1 : piece.id - 1;
+
+                    Common.whiteBlack.old_id = Common.whiteBlack.id;
+                    Common.whiteBlack.id = piece.id = new_ids++;
+
+
+                    switch(which){
+                        case 0: piece.piece.setImageResource(R.drawable.white_queen); piece.name = whiteQueen.name; break;
+                        case 1: piece.piece.setImageResource(R.drawable.white_rook); piece.name = whiteRook1.name;break;
+                        case 2: piece.piece.setImageResource(R.drawable.white_bishop); piece.name = whiteBishop1.name; break;
+                        case 3: piece.piece.setImageResource(R.drawable.white_knight); piece.name = whiteKnight1.name; break;
+                    }
+                    Common.whiteBlack.new_name = piece.name;
+
+                    if (Common.isTimer) stopWhiteTimer();
+
+
+                    Common.whiteBlack.time = Common.time.white; //Update white time in firebase
+                    game.child("white").setValue(Common.whiteBlack);
+                    updateAttackSquares(boardLocations, attackedSquares);
+                    if (attackedSquares[whiteKing.location.y][whiteKing.location.x] == 0) {
+                        Common.underCheck = false;
+//            System.out.println("King not under check!");
+                    }
+
+                    if (Common.isTimer) startBlackTimer();
+                    dialog.cancel();
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
