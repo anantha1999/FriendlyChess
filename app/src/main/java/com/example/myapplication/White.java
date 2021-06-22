@@ -115,6 +115,8 @@ public class White extends AppCompatActivity {
 
     private Vector<View> capturedPieces = new Vector<>(16);
 
+    private int size;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +124,7 @@ public class White extends AppCompatActivity {
 
 //        onBackPressed();
         //Initialise views
+
         board = findViewById(R.id.board);
         resign = findViewById(R.id.resign);
         leave = findViewById(R.id.leave);
@@ -530,6 +533,12 @@ public class White extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        size = board.getWidth()/8;
+    }
+
     //Overriding to prevent pressing back button to change the activity
     @Override
     public void onBackPressed(){
@@ -800,9 +809,9 @@ public class White extends AppCompatActivity {
     }
 
     private void movePiece(float x, float y){
-        int x_mul = ((int)(x/126)) == 8? 7:((int)(x/126));
-        int y_mul = ((int)(y/126)) == 8? 7:((int)(y/126));
-        print(x_mul+" "+y_mul);
+        int x_mul = ((int)(x/(size))) == 8? 7:((int)(x/size));
+        int y_mul = ((int)(y/size)) == 8? 7:((int)(y/size));
+        print(x_mul+" "+y_mul+" "+size);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) selectedPiece.piece.getLayoutParams();
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
             return;

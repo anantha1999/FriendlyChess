@@ -121,6 +121,8 @@ public class Black extends AppCompatActivity {
 
     private Vector<View> capturedPieces = new Vector<>(16);
 
+    private int size;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,9 +133,10 @@ public class Black extends AppCompatActivity {
         whiteClock = findViewById(R.id.opponent_timer);
         blackClock = findViewById(R.id.player_timer);
 
+
         draw = findViewById(R.id.draw);
         board = findViewById(R.id.board);
-        board = findViewById(R.id.board);
+
         resign = findViewById(R.id.resign);
         leave = findViewById(R.id.leave);
 
@@ -535,6 +538,12 @@ public class Black extends AppCompatActivity {
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        size = board.getWidth()/8;
+    }
+
+    @Override
     public void onBackPressed(){
 
     }
@@ -803,8 +812,8 @@ public class Black extends AppCompatActivity {
     }
 
     private void movePiece(float x, float y){
-        int x_mul = ((int)(x/126)) == 8? 7:((int)(x/126));
-        int y_mul = ((int)(y/126)) == 8? 7:((int)(y/126));
+        int x_mul = ((int)(x/size)) == 8? 7:((int)(x/size));
+        int y_mul = ((int)(y/size)) == 8? 7:((int)(y/size));
         print(x_mul+" "+y_mul);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) selectedPiece.piece.getLayoutParams();
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
