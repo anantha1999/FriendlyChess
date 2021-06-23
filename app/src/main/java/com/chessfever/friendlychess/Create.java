@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.chessfever.friendlychess;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;

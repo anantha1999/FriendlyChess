@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.chessfever.friendlychess;
 
 import android.view.View;
 
@@ -652,7 +652,7 @@ public class Helper {
         if(new_x == x-1 && new_y == y-1){
             if(boardLocations[new_y][new_x] != 0) return true;
             if(getId_piece.containsKey(Common.previousMove.id) && getId_piece.get(Common.previousMove.id).name == "Pawn"){
-                if(Common.previousMove.old_x == new_x){
+                if(Common.previousMove.old_x == new_x && (new_x == x-1|| new_x == x+1)){
                     if(Common.previousMove.old_y == 1 && Common.previousMove.new_y == 3) return true;
                 }
             }

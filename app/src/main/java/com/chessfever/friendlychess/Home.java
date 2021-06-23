@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.chessfever.friendlychess;
 
 import android.content.Intent;
 import android.os.Bundle;

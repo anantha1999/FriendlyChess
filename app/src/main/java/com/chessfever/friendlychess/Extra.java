@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.chessfever.friendlychess;
 
 public class Extra {
     public int id = 0;

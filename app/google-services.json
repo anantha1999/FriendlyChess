@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1002838255709:android:03f297f8cc79f5e4ba05b4",
+        "android_client_info": {
+          "package_name": "com.chessfever.friendlychess"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002838255709-tc84knld0h9nba79m5ubtkhfca103696.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAttn1usSr-6Nmp9HHMT7fb8OIFywf60Ec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002838255709-tc84knld0h9nba79m5ubtkhfca103696.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1002838255709:android:611f2b3927d413eaba05b4",
         "android_client_info": {
           "package_name": "com.example.myapplication"

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        applicationId "com.example.myapplication"
+        applicationId "com.chessfever.friendlychess"
         minSdkVersion 14
         targetSdkVersion 30
         versionCode 1

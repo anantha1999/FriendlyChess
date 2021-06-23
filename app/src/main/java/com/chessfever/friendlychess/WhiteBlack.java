@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.chessfever.friendlychess;
 
 public class WhiteBlack {
     public int castle = 0;
