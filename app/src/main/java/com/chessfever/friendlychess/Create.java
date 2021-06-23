@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -78,6 +79,16 @@ public class Create extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        try {
+            getSupportActionBar().hide();
+        }
+        catch (Exception e){
+
+        }
+
+        getWindow().setStatusBarColor(Color.parseColor("#1B1B1B"));
+
         Common.isTimer = false;
         timerText = findViewById(R.id.timerText);
         timerSwitch = findViewById(R.id.timerSwitch);
@@ -184,6 +195,7 @@ public class Create extends AppCompatActivity {
         });
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -191,6 +203,8 @@ public class Create extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 
     private void changeIntent(){
         if(playerWhite){
@@ -205,8 +219,10 @@ public class Create extends AppCompatActivity {
         }
     }
 
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+//        getActionBar().hide();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

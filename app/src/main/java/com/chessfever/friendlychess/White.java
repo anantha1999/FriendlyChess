@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -117,13 +119,19 @@ public class White extends AppCompatActivity {
 
     private int size;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_white);
 
-//        onBackPressed();
-        //Initialise views
+        try {
+        getSupportActionBar().hide();
+        }
+        catch (Exception e){
+
+        }
+        getWindow().setStatusBarColor(Color.parseColor("#1B1B1B"));
 
         board = findViewById(R.id.board);
         resign = findViewById(R.id.resign);
@@ -238,6 +246,7 @@ public class White extends AppCompatActivity {
                                     Common.time_increment = 0;
                                     Common.time.black = Common.time.white = 0;
                                     startActivity(intent);
+
                                     finish();
                                     Common.gameOver = true;
                                 });
@@ -293,6 +302,7 @@ public class White extends AppCompatActivity {
                                             Common.time_increment = 0;
                                             Common.time.black = Common.time.white = 0;
                                             startActivity(intent);
+
                                             finish();
                                             dialog.cancel();
                                         });
@@ -341,6 +351,7 @@ public class White extends AppCompatActivity {
                                             Common.time_increment = 0;
                                             Common.time.black = Common.time.white = 0;
                                             startActivity(intent);
+
                                             finish();
                                         });
                         builder
@@ -385,6 +396,7 @@ public class White extends AppCompatActivity {
                                     Common.time.black = Common.time.white = 0;
                                     Helper.restoreViews(capturedPieces);
                                     startActivity(intent);
+
                                     finish();
                                 });
                 builder
@@ -423,6 +435,7 @@ public class White extends AppCompatActivity {
                                                 Common.time_increment = 0;
                                                 Common.time.black = Common.time.white = 0;
                                                 startActivity(intent);
+
                                                 finish();
                                                 dialog.cancel();
                                             });
@@ -446,6 +459,7 @@ public class White extends AppCompatActivity {
                                                 Common.time_increment = 0;
                                                 Common.time.black = Common.time.white = 0;
                                                 startActivity(intent);
+
                                                 finish();
                                                 dialog.cancel();
                                             });
@@ -532,6 +546,7 @@ public class White extends AppCompatActivity {
                                                     Common.time_increment = 0;
                                                     Common.time.black = Common.time.white = 0;
                                                     startActivity(intent);
+
                                                     finish();
                                                     dialog.cancel();
                                                 });
@@ -578,6 +593,7 @@ public class White extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         size = board.getWidth()/8;
+//        getActionBar().hide();
     }
 
     //Overriding to prevent pressing back button to change the activity
@@ -594,12 +610,12 @@ public class White extends AppCompatActivity {
                 if(!Common.gameOver && whitePawn.allowed && white_turn) {
                     if (selectedPiece == null) {
                         selectedPiece = whitePawn;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         if (selectedPiece != whitePawn) {
                             selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                             selectedPiece = whitePawn;
-                            selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                            selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                         } else {
                             selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                             selectedPiece = null;
@@ -685,12 +701,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteKing.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteKing;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteKing) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteKing;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -703,12 +719,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteQueen.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteQueen;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteQueen) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteQueen;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -721,12 +737,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteBishop1.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteBishop1;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteBishop1) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteBishop1;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -739,12 +755,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteBishop2.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteBishop2;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteBishop2) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteBishop2;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -757,12 +773,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteKnight1.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteKnight1;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteKnight1) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteKnight1;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -775,12 +791,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteKnight2.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteKnight2;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteKnight2) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteKnight2;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -793,12 +809,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteRook1.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteRook1;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteRook1) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteRook1;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -811,12 +827,12 @@ public class White extends AppCompatActivity {
             if(!Common.gameOver && whiteRook2.allowed && white_turn) {
                 if (selectedPiece == null) {
                     selectedPiece = whiteRook2;
-                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                    selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                 } else {
                     if (selectedPiece != whiteRook2) {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = whiteRook2;
-                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#0A6224"));
+                        selectedPiece.piece.setBackgroundColor(Color.parseColor("#680000"));
                     } else {
                         selectedPiece.piece.setBackgroundColor(Color.TRANSPARENT);
                         selectedPiece = null;
@@ -1636,5 +1652,19 @@ public class White extends AppCompatActivity {
             return getId_piece.get(id);
         }
         return getId_piece.get(old_id);
+    }
+
+    private void deleteCode(){
+        game.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 }

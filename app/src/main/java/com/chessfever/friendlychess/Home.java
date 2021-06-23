@@ -1,9 +1,12 @@
 package com.chessfever.friendlychess;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Home extends AppCompatActivity {
@@ -14,12 +17,20 @@ public class Home extends AppCompatActivity {
 
     private int id;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Intent intent = new Intent(this, Black.class);
-//        startActivity(intent);
+
         setContentView(R.layout.activity_home);
+
+        try {
+            getSupportActionBar().hide();
+        }
+        catch (Exception e){
+
+        }
+        getWindow().setStatusBarColor(Color.parseColor("#1B1B1B"));
         button1 = findViewById(R.id.button1);
 
         button2 = findViewById(R.id.button2);
@@ -51,7 +62,9 @@ public class Home extends AppCompatActivity {
         finish();
     }
 
-    private void changeButtonColour(){
-        button1.setBackgroundColor(getResources().getColor(R.color.black));
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+//        getActionBar().hide();
     }
 }
