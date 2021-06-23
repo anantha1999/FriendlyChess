@@ -41,12 +41,14 @@ public class Home extends AppCompatActivity {
     private void goToCreate(){
         Intent intent = new Intent(this, Create.class);
         startActivity(intent);
+        finish();
 //        System.out.println(Constants.whiteBlack);
     }
 
     private void goToJoin(){
         Intent intent = new Intent(this, Join.class);
         startActivity(intent);
+        finish();
     }
 
     private void changeButtonColour(){

@@ -10,4 +10,6 @@ public class Common {
     public static boolean isTimer = false;
     public static boolean gameOver = false;
     public static WhiteBlack previousMove = new WhiteBlack();
+    public static WhiteBlack attackingPiece = new WhiteBlack();
+    public static WhiteBlack playerKing = new WhiteBlack();
 }

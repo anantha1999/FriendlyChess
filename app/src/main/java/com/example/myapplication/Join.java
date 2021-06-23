@@ -44,6 +44,14 @@ public class Join extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, Home.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void changeIntent(){
         if(playerWhite){
             System.out.println("Inside white");

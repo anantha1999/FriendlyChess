@@ -27,6 +27,11 @@ public class Helper {
         while(tempX < 8 && tempY < 8){
 
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
             ++tempY;
@@ -38,6 +43,11 @@ public class Helper {
         ++tempY;
         while(tempX >= 0 && tempY < 8){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempX;
             ++tempY;
@@ -49,6 +59,11 @@ public class Helper {
         --tempY;
         while(tempX >= 0 && tempY >= 0){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempX;
             --tempY;
@@ -60,6 +75,11 @@ public class Helper {
         --tempY;
         while(tempX < 8 && tempY >= 0){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
             --tempY;
@@ -76,6 +96,11 @@ public class Helper {
         ++tempX;
         while(tempX < 8){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
         }
@@ -84,6 +109,11 @@ public class Helper {
         ++tempY;
         while(tempY < 8){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempY;
         }
@@ -92,6 +122,11 @@ public class Helper {
         --tempX;
         while(tempX >= 0){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempX;
         }
@@ -100,6 +135,11 @@ public class Helper {
         --tempY;
         while(tempY >= 0){
             attackedSquares[tempY][tempX] = 1;
+            if(Common.playerKing.new_x == tempX && Common.playerKing.new_y == tempY){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempY;
         }
@@ -206,34 +246,74 @@ public class Helper {
 
         if(x+2 < 8 && y+1 < 8){
             attackedSquares[y+1][x+2] = 1;
+            if(Common.playerKing.new_x == x+2 && Common.playerKing.new_y == y+1){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x+2 < 8 && y-1 >= 0){
             attackedSquares[y-1][x+2] = 1;
+            if(Common.playerKing.new_x == x+2 && Common.playerKing.new_y == y-1){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x-2 >= 0 && y+1 < 8){
             attackedSquares[y+1][x-2] = 1;
+            if(Common.playerKing.new_x == x-2 && Common.playerKing.new_y == y+1){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x-2 >= 0 && y-1 >= 0){
             attackedSquares[y-1][x-2] = 1;
+            if(Common.playerKing.new_x == x-2 && Common.playerKing.new_y == y-1){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x+1 < 8 && y+2 < 8){
             attackedSquares[y+2][x+1] = 1;
+            if(Common.playerKing.new_x == x+1 && Common.playerKing.new_y == y+2){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x+1 < 8 && y-2 >= 0){
             attackedSquares[y-2][x+1] = 1;
+            if(Common.playerKing.new_x == x+1 && Common.playerKing.new_y == y-2){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x-1 >= 0 && y+2 < 8){
             attackedSquares[y+2][x-1] = 1;
+            if(Common.playerKing.new_x == x-1 && Common.playerKing.new_y == y+2){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
         if(x-1 >= 0 && y-2 >= 0){
             attackedSquares[y-2][x-1] = 1;
+            if(Common.playerKing.new_x == x-1 && Common.playerKing.new_y == y-2){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+            }
         }
 
     }
