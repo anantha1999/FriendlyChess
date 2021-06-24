@@ -48,12 +48,12 @@ public class Home extends AppCompatActivity {
         });
 
     }
-//
+
     private void goToCreate(){
         Intent intent = new Intent(this, Create.class);
         startActivity(intent);
         finish();
-//        System.out.println(Constants.whiteBlack);
+
     }
 
     private void goToJoin(){
@@ -65,6 +65,6 @@ public class Home extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-//        getActionBar().hide();
+
     }
 }

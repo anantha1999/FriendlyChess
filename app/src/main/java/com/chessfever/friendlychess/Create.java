@@ -230,7 +230,7 @@ public class Create extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-//        getActionBar().hide();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

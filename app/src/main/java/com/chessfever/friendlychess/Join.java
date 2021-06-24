@@ -157,11 +157,5 @@ public class Join extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        getActionBar().hide();
-//    }
-
 
 }

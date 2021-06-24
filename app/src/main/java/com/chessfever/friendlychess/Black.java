@@ -65,7 +65,7 @@ public class Black extends AppCompatActivity {
     private ChessPiece whiteRook1 = new ChessPiece();
     private ChessPiece whiteRook2 = new ChessPiece();
 
-//    private DatabaseReference mDatabase;
+
 
     private boolean black_turn = false;
 
@@ -586,7 +586,7 @@ public class Black extends AppCompatActivity {
                                 alertDialog.show();
                             }
 
-//                        System.out.println("King under check!");
+
                         }
 
                         //If the game has timer then stop opponent timer and start player timer
@@ -626,7 +626,7 @@ public class Black extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         size = board.getWidth()/8;
-//        getActionBar().hide();
+
     }
 
     @Override
@@ -670,7 +670,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteQueen);
-//                whiteQueen.setVisibility(View.GONE);
+
             }
 
         });
@@ -679,7 +679,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteBishop1);
-//                whiteBishop1.setVisibility(View.GONE);
+
             }
 
         });
@@ -688,7 +688,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteBishop2);
-//                whiteBishop2.setVisibility(View.GONE);
+
             }
 
         });
@@ -697,7 +697,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteKnight1);
-//                whiteKnight1.setVisibility(View.GONE);
+
             }
 
         });
@@ -706,7 +706,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteKnight2);
-//                whiteKnight2.setVisibility(View.GONE);
+
             }
 
         });
@@ -715,7 +715,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteRook1);
-//                whiteRook1.setVisibility(View.GONE);
+
             }
 
         });
@@ -724,7 +724,7 @@ public class Black extends AppCompatActivity {
             if(selectedPiece != null){
 
                 capturePiece(whiteRook2);
-//                whiteRook2.setVisibility(View.GONE);
+
             }
 
         });
@@ -886,7 +886,7 @@ public class Black extends AppCompatActivity {
             return false;
         });
 
-        //approx 126 units is the length of each square
+
         board.setOnClickListener(v -> {
 
             if(selectedPiece != null){
@@ -908,12 +908,12 @@ public class Black extends AppCompatActivity {
         removeAttackSquares(boardLocations, attackedSquares);
         if(x_mul != selectedPiece.location.x){
             params.horizontalBias = (float)(x_mul*0.14285);
-//            selectedPiece.location.x = x_mul;
+
         }
 
         if(y_mul != selectedPiece.location.y){
             params.verticalBias = (float)(y_mul*0.14285);
-//            selectedPiece.location.y = y_mul;
+
         }
 
         selectedPiece.piece.setLayoutParams(params);
@@ -923,9 +923,9 @@ public class Black extends AppCompatActivity {
         updateBoardLocations(selectedPiece, x_mul, y_mul);
         black_turn = false;
         selectedPiece = null;
-//        allowAllMoves();
-//        System.out.println("Attacked squares \n");
-//        Helper.print2D(attackedSquares);
+
+
+
     }
 
     private void capturePiece(ChessPiece piece){
@@ -942,12 +942,12 @@ public class Black extends AppCompatActivity {
 
         if(x_mul != selectedPiece.location.x){
             selectedPieceParams.horizontalBias = (float)(x_mul*0.14285);
-//            selectedPiece.location.x = x_mul;
+
         }
 
         if(y_mul != selectedPiece.location.y){
             selectedPieceParams.verticalBias = (float)(y_mul*0.14285);
-//            selectedPiece.location.y = y_mul;
+
         }
         selectedPiece.piece.setLayoutParams(selectedPieceParams);
         selectedPiece.firstMove = false;
@@ -965,10 +965,10 @@ public class Black extends AppCompatActivity {
         black_turn = false;
         piece.piece.setVisibility(View.GONE);
         capturedPieces.add(piece.piece);
-//        allowAllMoves();
-//        Helper.print2D(boardLocations);
-//        System.out.println("Attacked squares \n");
-//        Helper.print2D(attackedSquares);
+
+
+
+
     }
 
     private void updateLocations(){
@@ -1138,37 +1138,15 @@ public class Black extends AppCompatActivity {
 
 
     private void updateAttackSquares(int[][] boardLocations, int[][] attackedSquares){
-//        for(int i=0; i<8; ++i){
-//            if(!whitePawns[i].captured) Helper.updatePawnAttackSquares(whitePawns[i], attackedSquares, boardLocations);
-//        }
-//        if(!whiteKing.captured) Helper.updateKingAttackSquares(whiteKing, attackedSquares, boardLocations);
-//        if(!whiteQueen.captured) Helper.updateQueenAndRookAttackSquares(whiteQueen, attackedSquares, boardLocations);
-//        if(!whiteBishop1.captured) Helper.updateBishopAttackSquares(whiteBishop1, attackedSquares, boardLocations);
-//        if(!whiteBishop2.captured) Helper.updateBishopAttackSquares(whiteBishop2, attackedSquares, boardLocations);
-//        if(!whiteKnight1.captured) Helper.updateKnightAttackSquares(whiteKnight1, attackedSquares, boardLocations);
-//        if(!whiteKnight2.captured) Helper.updateKnightAttackSquares(whiteKnight2, attackedSquares, boardLocations);
-//        if(!whiteRook1.captured) Helper.updateQueenAndRookAttackSquares(whiteRook1, attackedSquares, boardLocations);
-//        if(!whiteRook2.captured) Helper.updateQueenAndRookAttackSquares(whiteRook2, attackedSquares, boardLocations);
         for(ChessPiece piece: getId_piece.values()){
-//            print(piece.name+" "+piece.id);
+
             if(piece.id > 0 && !piece.captured) updateAllAttackSquares(piece, boardLocations, attackedSquares);
         }
     }
 
     private void removeAttackSquares(int[][] boardLocations, int[][] attackedSquares){
-//        for(int i=0; i<8; ++i){
-//            if(!whitePawns[i].captured) Helper.removePawnAttackSquares(whitePawns[i], attackedSquares, boardLocations);
-//        }
-//        if(!whiteKing.captured) Helper.removeKingAttackSquares(whiteKing, attackedSquares, boardLocations);
-//        if(!whiteQueen.captured) Helper.removeQueenAndRookAttackSquares(whiteQueen, attackedSquares, boardLocations);
-//        if(!whiteBishop1.captured) Helper.removeBishopAttackSquares(whiteBishop1, attackedSquares, boardLocations);
-//        if(!whiteBishop2.captured) Helper.removeBishopAttackSquares(whiteBishop2, attackedSquares, boardLocations);
-//        if(!whiteKnight1.captured) Helper.removeKnightAttackSquares(whiteKnight1, attackedSquares, boardLocations);
-//        if(!whiteKnight2.captured) Helper.removeKnightAttackSquares(whiteKnight2, attackedSquares, boardLocations);
-//        if(!whiteRook1.captured) Helper.removeQueenAndRookAttackSquares(whiteRook1, attackedSquares, boardLocations);
-//        if(!whiteRook2.captured) Helper.removeQueenAndRookAttackSquares(whiteRook2, attackedSquares, boardLocations);
         for(ChessPiece piece: getId_piece.values()){
-//            print(piece.name+" "+piece.id);
+
             if(piece.id > 0 && !piece.captured) removeAllAttackSquares(piece, boardLocations, attackedSquares);
         }
 
@@ -1201,9 +1179,8 @@ public class Black extends AppCompatActivity {
             DatabaseReference game = database.child(Common.code);
             Common.whiteBlack.old_x = (7 - piece.location.x);
             Common.whiteBlack.old_y = (7 - piece.location.y);
+
             boardLocations[piece.location.y][piece.location.x] = 0;
-//        pieceLocations[new_y][new_x] = piece.id;
-//        pieceLocations[piece.location.y][piece.location.x] = 0;
             boardLocations[new_y][new_x] = -1;
 
             int x = piece.location.x;
@@ -1249,7 +1226,7 @@ public class Black extends AppCompatActivity {
             updateAttackSquares(boardLocations, attackedSquares);
             if (attackedSquares[blackKing.location.y][blackKing.location.x] == 0) {
                 Common.underCheck = false;
-//            System.out.println("King not under check!");
+
             }
             if (Common.isTimer) startWhiteTimer();
         }
@@ -1373,7 +1350,7 @@ public class Black extends AppCompatActivity {
         ++tempX;
         --tempY;
         while(tempX < 8 && tempY >= 0){
-//            System.out.println("Bishop - NewX = "+tempX+" NewY = "+tempY+" x = "+x+" y = "+y+" boardLocation[x][y] = "+boardLocations[x][y]);
+
             if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
@@ -1497,7 +1474,7 @@ public class Black extends AppCompatActivity {
         temp_board[old_y][old_x] = 0;
         temp_board[new_y][new_x] = -1;
         updateAttackSquares(temp_board, temp_attack);
-//        Helper.print2D(temp_attack);
+
         if(piece.name.equals("King") && temp_attack[new_y][new_x] == 0) return false;
         if(temp_attack[blackKing.location.y][blackKing.location.x] == 0){
             return false;
@@ -1563,13 +1540,13 @@ public class Black extends AppCompatActivity {
     }
 
     private void startWhiteTimer(){
-//        if(addIncrementWhite) Common.time.white += 2;
+
         whiteTimer = new CountDownTimer(Common.time.white*1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
                 Common.time.white = (int)(millisUntilFinished/1000);
-//                addIncrementWhite = true;
+
                 whiteClock.setText(Helper.convertTime((int)(millisUntilFinished/1000)));
 
             }
@@ -1649,8 +1626,8 @@ public class Black extends AppCompatActivity {
         builder.setCancelable(false);
         builder
                 .setItems(R.array.promote, (dialog, which) -> {
-                    // The 'which' argument contains the index position
-                    // of the selected item
+
+
                     DatabaseReference game = database.child(Common.code);
                     Common.whiteBlack.old_x = (7 - piece.location.x);
                     Common.whiteBlack.old_y = (7 - piece.location.y);
@@ -1688,12 +1665,12 @@ public class Black extends AppCompatActivity {
                     if (Common.isTimer) stopBlackTimer();
 
 
-                    Common.whiteBlack.time = Common.time.white; //Update white time in firebase
+                    Common.whiteBlack.time = Common.time.white;
                     game.child("black").setValue(Common.whiteBlack);
                     updateAttackSquares(boardLocations, attackedSquares);
                     if (attackedSquares[whiteKing.location.y][whiteKing.location.x] == 0) {
                         Common.underCheck = false;
-//            System.out.println("King not under check!");
+
                     }
 
                     if (Common.isTimer) startWhiteTimer();
