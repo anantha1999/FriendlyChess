@@ -89,6 +89,8 @@ public class Create extends AppCompatActivity {
 
         getWindow().setStatusBarColor(Color.parseColor("#1B1B1B"));
 
+        code = findViewById(R.id.code);
+        Common.gameOver = false;
         Common.isTimer = false;
         timerText = findViewById(R.id.timerText);
         timerSwitch = findViewById(R.id.timerSwitch);
@@ -130,11 +132,12 @@ public class Create extends AppCompatActivity {
 
         createButton.setOnClickListener(v -> {
             if(!flag) {
+                code.setVisibility(View.VISIBLE);
+                copyButton.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
                 waiting.setVisibility(View.VISIBLE);
                 Random random = new Random();
                 Common.code = generateCode()+random.nextInt(10000);
-                code = findViewById(R.id.code);
                 code.setText(Common.code);
                 DatabaseReference dbRef = database.getReference();
                 DatabaseReference game = dbRef.child(Common.code);
@@ -146,6 +149,8 @@ public class Create extends AppCompatActivity {
                     black.time = (int) (Float.parseFloat(minutesValue.getText().toString())*60);
                     black.bonus = (int) (Float.parseFloat(bonusValue.getText().toString()));
                 }
+                white.isGameOver = 0;
+                black.isGameOver = 0;
                 game.child("white").setValue(white);
                 game.child("black").setValue(black);
                 game.child("whitedraw").setValue(0);
@@ -177,6 +182,9 @@ public class Create extends AppCompatActivity {
         whiteText = findViewById(R.id.whiteText);
         blackText = findViewById(R.id.blackText);
         copyButton = findViewById(R.id.copy);
+
+        copyButton.setVisibility(View.GONE);
+        code.setVisibility(View.GONE);
 
         whiteButton.setOnClickListener(v -> {
             changeWhiteButtonColour();

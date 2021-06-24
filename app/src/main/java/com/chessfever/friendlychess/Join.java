@@ -44,6 +44,7 @@ public class Join extends AppCompatActivity {
         catch (Exception e){
 
         }
+        Common.gameOver = false;
         getWindow().setStatusBarColor(Color.parseColor("#1B1B1B"));
         context = getApplicationContext();
         joinButton = findViewById(R.id.join);
