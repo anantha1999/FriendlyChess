@@ -13,6 +13,7 @@ public class WhiteBlack {
     public int time;
     public int bonus;
     public int isGameOver = 0;
+    public boolean leave = false;
     public boolean isTimer = true;
     public Extra rook = new Extra();
 }

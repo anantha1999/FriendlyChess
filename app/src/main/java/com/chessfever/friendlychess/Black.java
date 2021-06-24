@@ -79,13 +79,13 @@ public class Black extends AppCompatActivity {
 
     private boolean underCheck = false;
 
-    public static int[][] boardLocations = new int[8][8];
+    public int[][] boardLocations = new int[8][8];
 
-    public static int[][] attackedSquares = new int[8][8];
+    public int[][] attackedSquares = new int[8][8];
 
-    public static int[][] pieceLocations = new int[8][8];
+    public int[][] pieceLocations = new int[8][8];
 
-    private static Map<Integer, ChessPiece> id_piece = new HashMap<>();
+    private Map<Integer, ChessPiece> id_piece = new HashMap<>();
 
     private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
@@ -238,7 +238,7 @@ public class Black extends AppCompatActivity {
                                     Common.time_increment = 0;
                                     Common.time.black = Common.time.white = 0;
                                     startActivity(intent);
-
+                                    Helper.restoreViews(capturedPieces);
                                     finish();
                                 });
                 builder
@@ -292,7 +292,7 @@ public class Black extends AppCompatActivity {
                                             Common.time_increment = 0;
                                             Common.time.black = Common.time.white = 0;
                                             startActivity(intent);
-
+                                            Helper.restoreViews(capturedPieces);
                                             finish();
                                             dialog.cancel();
                                         });
@@ -341,7 +341,7 @@ public class Black extends AppCompatActivity {
                                             Common.time_increment = 0;
                                             Common.time.black = Common.time.white = 0;
                                             startActivity(intent);
-
+                                            Helper.restoreViews(capturedPieces);
                                             finish();
                                         });
                         builder
@@ -397,13 +397,14 @@ public class Black extends AppCompatActivity {
                                 "Yes",
                                 (dialog, which) -> {
                                     Intent intent = new Intent(this, Home.class);
+                                    game.child("black").child("leave").setValue(true);
                                     Common.gameOver = false;
                                     Common.isTimer = false;
                                     Common.time_increment = 0;
                                     Common.time.black = Common.time.white = 0;
                                     Helper.restoreViews(capturedPieces);
                                     startActivity(intent);
-
+                                    Helper.restoreViews(capturedPieces);
                                     finish();
                                 });
                 builder
@@ -421,7 +422,31 @@ public class Black extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 if(flag){
                     WhiteBlack whiteMove = snapshot.getValue(WhiteBlack.class);
-                    if(whiteMove.isGameOver != 0){ //Checks if the opponent resigned or got checkmated
+                    if(whiteMove.leave){
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(Black.this);
+                        builder.setMessage("Your opponent has left the game");
+                        builder.setTitle("");
+                        builder.setCancelable(false);
+                        builder
+                                .setPositiveButton(
+                                        "OK",
+                                        (dialog, which) -> {
+                                            Intent intent = new Intent(Black.this, Home.class);
+                                            Common.gameOver = false;
+                                            Common.isTimer = false;
+                                            Common.time_increment = 0;
+                                            Common.time.black = Common.time.white = 0;
+                                            startActivity(intent);
+                                            Helper.restoreViews(capturedPieces);
+                                            finish();
+                                            dialog.cancel();
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                    else if(whiteMove.isGameOver != 0){ //Checks if the opponent resigned or got checkmated
                         Common.gameOver = true;
 
                         stopAllTimers();// stop the timers
@@ -444,7 +469,7 @@ public class Black extends AppCompatActivity {
                                                 Common.time.black = Common.time.white = 0;
                                                 startActivity(intent);
                                                 finish();
-
+                                                Helper.restoreViews(capturedPieces);
                                                 dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
@@ -467,6 +492,7 @@ public class Black extends AppCompatActivity {
                                                 Common.time_increment = 0;
                                                 Common.time.black = Common.time.white = 0;
                                                 startActivity(intent);
+                                                Helper.restoreViews(capturedPieces);
                                                 finish();
 
                                                 dialog.cancel();
@@ -530,6 +556,7 @@ public class Black extends AppCompatActivity {
                         if (attackedSquares[blackKing.location.y][blackKing.location.x] == 1) {
                             Common.underCheck = true;
                             if (isCheckmate()) { //Checks if the player got checkmated
+                                print("Inside checkmate black "+ isCheckmate());
                                 game.child("black").child(("isGameOver")).setValue(1);
                                 Common.gameOver = true;
                                 stopAllTimers();
@@ -549,6 +576,7 @@ public class Black extends AppCompatActivity {
                                                     Common.time_increment = 0;
                                                     Common.time.black = Common.time.white = 0;
                                                     startActivity(intent);
+                                                    Helper.restoreViews(capturedPieces);
                                                     finish();
 
                                                     dialog.cancel();
@@ -1291,7 +1319,6 @@ public class Black extends AppCompatActivity {
             if(piece.id < 0 && !piece.captured) checkmate = !checkMovesPossible(piece);
             if(!checkmate) return checkmate;
         }
-
         return checkmate;
     }
 
