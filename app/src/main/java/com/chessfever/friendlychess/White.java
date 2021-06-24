@@ -521,7 +521,7 @@ public class White extends AppCompatActivity {
                         //Checks if the opponent has captured a piece
                         if (blackMove.capturedPiece_id != 0) {
                             ChessPiece captured = getId_piece.get(blackMove.capturedPiece_id);
-
+                            boardLocations[captured.location.y][captured.location.x] = 0;
                             captured.captured = true;
                             captured.piece.setVisibility(View.GONE);
                             capturedPieces.add(captured.piece);
@@ -942,6 +942,8 @@ public class White extends AppCompatActivity {
         else if(piece.id%2 == 0) Common.whiteBlack.capturedPiece_id = (piece.id > 0)?  piece.id-1: piece.id+1;
         else Common.whiteBlack.capturedPiece_id = (piece.id > 0)? piece.id+1:piece.id-1;
 
+        boardLocations[piece.location.y][piece.location.x] = 0;
+
         updateBoardLocations(selectedPiece, piece.location.x, piece.location.y);
         selectedPiece = null;
         white_turn = false;
@@ -1176,6 +1178,7 @@ public class White extends AppCompatActivity {
     private void updateBoardLocations(ChessPiece piece, int new_x, int new_y){
         if(new_y == 0 && piece.name.equals("Pawn")){
             pawnPromotion(piece, new_x, new_y);
+            updateAttackSquares(boardLocations, attackedSquares);
         }
         else {
             //Updates player's moves on board
@@ -1217,6 +1220,7 @@ public class White extends AppCompatActivity {
                     if(new_x == Common.previousMove.new_x && (new_x == x-1|| new_x == x+1)){
                         if(Common.previousMove.old_y == 1 && Common.previousMove.new_y == 3){
                             ChessPiece enpassentPiece = getId_piece.get(Common.previousMove.id);
+                            boardLocations[enpassentPiece.location.y][enpassentPiece.location.x] = 0;
                             enpassentPiece.piece.setVisibility(View.GONE);
                             enpassentPiece.captured = true;
                             Common.whiteBlack.capturedPiece_id = (Common.previousMove.id > 0)? (9-Common.previousMove.id):(-9-Common.previousMove.id);

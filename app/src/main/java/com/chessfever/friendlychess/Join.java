@@ -57,27 +57,34 @@ public class Join extends AppCompatActivity {
                 game.child("players").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        if(snapshot.getValue(Integer.class) < 2) {
-                            changeIntentListener(game);
-                            join_flag = false;
+                        try {
+                            if (snapshot.getValue(Integer.class) < 2) {
+                                changeIntentListener(game);
+                                join_flag = false;
+                            } else if (join_flag) {
+                                AlertDialog.Builder builder
+                                        = new AlertDialog
+                                        .Builder(Join.this);
+
+                                builder.setMessage("Room is full");
+                                builder.setTitle("");
+                                builder.setCancelable(false);
+
+                                builder
+                                        .setPositiveButton(
+                                                "Ok",
+                                                (dialog, which) -> {
+                                                    dialog.cancel();
+                                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
                         }
-                        else if(join_flag){
-                            AlertDialog.Builder builder
-                                    = new AlertDialog
-                                    .Builder(Join.this);
-
-                            builder.setMessage("Room is full");
-                            builder.setTitle("");
-                            builder.setCancelable(false);
-
-                            builder
-                                    .setPositiveButton(
-                                            "Ok",
-                                            (dialog, which) -> {
-                                                dialog.cancel();
-                                            });
-                            AlertDialog alertDialog = builder.create();
-                            alertDialog.show();
+                        catch (Exception e){
+                            CharSequence text = "Code is invalid";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
                         }
                     }
 
