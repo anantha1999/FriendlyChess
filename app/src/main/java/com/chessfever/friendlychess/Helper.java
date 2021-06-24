@@ -537,7 +537,7 @@ public class Helper {
         ++tempX;
         --tempY;
         while(tempX < 8 && tempY >= 0){
-//            System.out.println("Bishop - NewX = "+tempX+" NewY = "+tempY+" x = "+x+" y = "+y+" boardLocation[x][y] = "+boardLocations[x][y]);
+
             if(new_x == tempX && new_y == tempY) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
@@ -581,8 +581,8 @@ public class Helper {
         tempX = x;
         --tempY;
         while(tempY >= 0){
-//            System.out.println("This while loop\n");
-//            System.out.println("NewX = "+new_x+" NewY = "+new_y+" x = "+x+" y = "+y+" boardLocation[x][y] = "+boardLocations[x][y]);
+
+
             if(new_x == tempX && new_y == tempY) return true;
             if(boardLocations[tempY][tempX] != 0) break;
             --tempY;
@@ -645,7 +645,7 @@ public class Helper {
         int y = piece.location.y;
 
         if(piece.firstMove){
-//            System.out.println("Inside first move condition   new_x = "+new_x+ " x = "+x+" new_y = "+new_y+" y = "+y);
+
             if(new_x == x && new_y == y-2 && boardLocations[y-2][x] != 1) return true;
         }
         if(new_x == x && new_y == y-1 && boardLocations[y-1][x] != 1) return true;
@@ -680,9 +680,7 @@ public class Helper {
         piece.piece.setLayoutParams(params);
         piece.location.x = new_x;
         piece.location.y = new_y;
-//        Helper.print2D(boardLocations);
-//        System.out.println("Attacked squares \n");
-//        Helper.print2D(attackedSquares);
+
     }
 
 
