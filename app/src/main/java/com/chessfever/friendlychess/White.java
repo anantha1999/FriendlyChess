@@ -515,18 +515,20 @@ public class White extends AppCompatActivity {
                         }
 
 
-                        //Moves the opponent piece
-                        Helper.moveOpponentPiece(blackMove.old_x, blackMove.old_y, blackMove.new_x, blackMove.new_y, boardLocations, attackedSquares, piece, pieceLocations);
-
                         //Checks if the opponent has captured a piece
                         if (blackMove.capturedPiece_id != 0) {
                             ChessPiece captured = getId_piece.get(blackMove.capturedPiece_id);
-
+                            boardLocations[captured.location.y][captured.location.x] = 0;
                             captured.captured = true;
                             captured.piece.setVisibility(View.GONE);
                             capturedPieces.add(captured.piece);
                             blackMove.capturedPiece_id = 0;
                         }
+
+                        //Moves the opponent piece
+                        Helper.moveOpponentPiece(blackMove.old_x, blackMove.old_y, blackMove.new_x, blackMove.new_y, boardLocations, attackedSquares, piece, pieceLocations);
+
+
 
                         //Checks if the opponent has castled
                         if (blackMove.castle == 1) {
