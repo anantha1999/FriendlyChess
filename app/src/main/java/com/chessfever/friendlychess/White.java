@@ -521,7 +521,7 @@ public class White extends AppCompatActivity {
                         //Checks if the opponent has captured a piece
                         if (blackMove.capturedPiece_id != 0) {
                             ChessPiece captured = getId_piece.get(blackMove.capturedPiece_id);
-                            boardLocations[captured.location.y][captured.location.x] = 0;
+
                             captured.captured = true;
                             captured.piece.setVisibility(View.GONE);
                             capturedPieces.add(captured.piece);
