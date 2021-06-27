@@ -104,6 +104,9 @@ public class Create extends AppCompatActivity {
         bonus = findViewById(R.id.bonus);
         minutesValue = findViewById(R.id.minutesValue);
         bonusValue = findViewById(R.id.bonusValue);
+        minutesValue.setText("0.0");
+        bonusValue.setText("0.0");
+
 
         timerSwitch.setOnClickListener(v -> {
             if(Common.isTimer) {

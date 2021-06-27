@@ -1316,7 +1316,15 @@ public class Black extends AppCompatActivity {
         ++tempX;
         ++tempY;
         while(tempX < 8 && tempY < 8){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempX;
@@ -1328,7 +1336,15 @@ public class Black extends AppCompatActivity {
         --tempX;
         ++tempY;
         while(tempX >= 0 && tempY < 8){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempX;
@@ -1340,7 +1356,15 @@ public class Black extends AppCompatActivity {
         --tempX;
         --tempY;
         while(tempX >= 0 && tempY >= 0){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempX;
@@ -1353,7 +1377,15 @@ public class Black extends AppCompatActivity {
         --tempY;
         while(tempX < 8 && tempY >= 0){
 
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempX;
@@ -1370,7 +1402,15 @@ public class Black extends AppCompatActivity {
         int tempY = y;
 
         while(tempX < 8){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempX;
@@ -1379,7 +1419,15 @@ public class Black extends AppCompatActivity {
         tempX = x;
         ++tempY;
         while(tempY < 8){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             ++tempY;
@@ -1388,7 +1436,15 @@ public class Black extends AppCompatActivity {
         tempY = y;
         --tempX;
         while(tempX >= 0){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempX;
@@ -1397,7 +1453,15 @@ public class Black extends AppCompatActivity {
         tempX = x;
         --tempY;
         while(tempY >= 0){
-            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)) return true;
+            if((Common.attackingPiece.new_x == tempX && Common.attackingPiece.new_y == tempY)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,tempX,tempY)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
             if(boardLocations[tempY][tempX] != 0) break;
             if(!isUnderCheckAfterMove(piece, x,y,tempX, tempY)) return true;
             --tempY;
@@ -1413,35 +1477,107 @@ public class Black extends AppCompatActivity {
         int y = piece.location.y;
 
         if(x+2 < 8 && y+1 < 8){
-            if((boardLocations[y+1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y+1)) || (Common.attackingPiece.new_x == x+2 && Common.attackingPiece.new_y == y+1)) return true;
+            if((Common.attackingPiece.new_x == x+2 && Common.attackingPiece.new_y == y+1)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x+2,y+1)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y+1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y+1))) return true;
         }
 
         if(x+2 < 8 && y-1 >= 0){
-            if((boardLocations[y-1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y-1)) || (Common.attackingPiece.new_x == x+2 && Common.attackingPiece.new_y == y-1)) return true;
+            if((Common.attackingPiece.new_x == x+2 && Common.attackingPiece.new_y == y-1)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x+2,y-1)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y-1][x+2] != -1 && !isUnderCheckAfterMove(piece, x, y, x+2, y-1))) return true;
         }
 
         if(x-2 >= 0 && y+1 < 8){
-            if((boardLocations[y+1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y+1))|| (Common.attackingPiece.new_x == x-2 && Common.attackingPiece.new_y == y+1)) return true;
+            if((Common.attackingPiece.new_x == x-2 && Common.attackingPiece.new_y == y+1)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x-2,y+1)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y+1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y+1))) return true;
         }
 
         if(x-2 >= 0 && y-1 >= 0){
-            if((boardLocations[y-1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y-1)) || (Common.attackingPiece.new_x == x-2 && Common.attackingPiece.new_y == y-1)) return true;
+            if((Common.attackingPiece.new_x == x-2 && Common.attackingPiece.new_y == y-1)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x-2,y-1)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y-1][x-2] != -1 && !isUnderCheckAfterMove(piece, x, y, x-2, y-1))) return true;
         }
 
         if(x+1 < 8 && y+2 < 8){
-            if((boardLocations[y+2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y+2)) || (Common.attackingPiece.new_x == x+1 && Common.attackingPiece.new_y == y+2)) return true;
+            if((Common.attackingPiece.new_x == x+1 && Common.attackingPiece.new_y == y+2)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x+1,y+2)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y+2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y+2))) return true;
         }
 
         if(x+1 < 8 && y-2 >= 0){
-            if((boardLocations[y-2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y-2)) || (Common.attackingPiece.new_x == x+1 && Common.attackingPiece.new_y == y-2)) return true;
+            if((Common.attackingPiece.new_x == x+1 && Common.attackingPiece.new_y == y-2)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x+1,y-2)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y-2][x+1] != -1 && !isUnderCheckAfterMove(piece, x, y, x+1, y-2))) return true;
         }
 
         if(x-1 >= 0 && y+2 < 8){
-            if((boardLocations[y+2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y+2)) || (Common.attackingPiece.new_x == x-1 && Common.attackingPiece.new_y == y+2)) return true;
+            if((Common.attackingPiece.new_x == x-1 && Common.attackingPiece.new_y == y+2)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x-1,y+2)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y+2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y+2))) return true;
         }
 
         if(x-1 >= 0 && y-2 >= 0){
-            if((boardLocations[y-2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y-2)) || (Common.attackingPiece.new_x == x-1 && Common.attackingPiece.new_y == y-2)) return true;
+            if((Common.attackingPiece.new_x == x-1 && Common.attackingPiece.new_y == y-2)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x-1,y-2)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if((boardLocations[y-2][x-1] != -1 && !isUnderCheckAfterMove(piece, x, y, x-1, y-2))) return true;
         }
         return false;
     }
@@ -1455,10 +1591,28 @@ public class Black extends AppCompatActivity {
         }
         if(y-1 >= 0 && boardLocations[y-1][x] == 0 && !isUnderCheckAfterMove(piece, x, y, x, y-1)) return true;
         if(y-1 >= 0 && x-1 >= 0 && boardLocations[y-1][x-1] == 1){
-            if(!isUnderCheckAfterMove(piece,x,y,x-1,y-1) || (Common.attackingPiece.new_x == x-1 && Common.attackingPiece.new_y == y-1)) return true;
+            if((Common.attackingPiece.new_x == x-1 && Common.attackingPiece.new_y == y-1)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x-1,y-1)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if(!isUnderCheckAfterMove(piece,x,y,x-1,y-1)) return true;
         }
         if(y-1 >=0 && x+1 < 8 && boardLocations[y-1][x+1] == 1){
-            if(!isUnderCheckAfterMove(piece,x,y,x+1,y-1) || (Common.attackingPiece.new_x == x+1 && Common.attackingPiece.new_y == y-1)) return true;
+            if((Common.attackingPiece.new_x == x+1 && Common.attackingPiece.new_y == y-1)){
+                ChessPiece attacker = getId_piece.get(Common.attackingPiece.id);
+                attacker.captured = true;
+                if(!isUnderCheckAfterMove(piece,x,y,x+1,y-1)){
+                    attacker.captured = false;
+                    return true;
+                }
+                attacker.captured = false;
+            }
+            if(!isUnderCheckAfterMove(piece,x,y,x+1,y-1)) return true;
         }
         return false;
     }
@@ -1587,6 +1741,15 @@ public class Black extends AppCompatActivity {
                         .setPositiveButton(
                                 "OK",
                                 (dialog, which) -> {
+                                    Intent intent = new Intent(Black.this, Home.class);
+                                    Common.gameOver = false;
+                                    Common.isTimer = false;
+                                    Common.time_increment = 0;
+                                    Common.time.black = Common.time.white = 0;
+                                    startActivity(intent);
+                                    Helper.restoreViews(capturedPieces);
+                                    finish();
+
                                     dialog.cancel();
                                 });
                 AlertDialog alertDialog = builder.create();

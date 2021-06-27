@@ -31,6 +31,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
@@ -47,6 +48,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempX;
@@ -63,6 +65,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempX;
@@ -79,6 +82,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
@@ -100,6 +104,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempX;
@@ -113,6 +118,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             ++tempY;
@@ -126,6 +132,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempX;
@@ -139,6 +146,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
             if(boardLocations[tempY][tempX] != 0) break;
             --tempY;
@@ -250,6 +258,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -259,6 +268,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -268,6 +278,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -277,6 +288,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -286,6 +298,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -295,6 +308,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -304,6 +318,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -313,6 +328,7 @@ public class Helper {
                 Common.attackingPiece.new_x = x;
                 Common.attackingPiece.new_y = y;
                 Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
             }
         }
 
@@ -360,9 +376,25 @@ public class Helper {
         int x = piece.location.x;
         int y = piece.location.y;
 
-        if(x-1 >= 0 && y+1 < 8) attackedSquares[y+1][x-1] = 1;
+        if(x-1 >= 0 && y+1 < 8){
+            attackedSquares[y+1][x-1] = 1;
+            if(Common.playerKing.new_x == x-1 && Common.playerKing.new_y == y+1){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
+            }
+        }
 
-        if(x+1 < 8 && y+1 < 8) attackedSquares[y+1][x+1] = 1;
+        if(x+1 < 8 && y+1 < 8){
+            attackedSquares[y+1][x+1] = 1;
+            if(Common.playerKing.new_x == x+1 && Common.playerKing.new_y == y+1){
+                Common.attackingPiece.new_x = x;
+                Common.attackingPiece.new_y = y;
+                Common.attackingPiece.new_name = piece.name;
+                Common.attackingPiece.id = piece.id;
+            }
+        }
     }
 
     public static void updateKingAttackSquares(ChessPiece piece, int[][] attackedSquares, int[][] boardLocations){
