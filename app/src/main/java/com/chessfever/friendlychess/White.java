@@ -248,7 +248,7 @@ public class White extends AppCompatActivity {
                                     startActivity(intent);
                                     Helper.restoreViews(capturedPieces);
                                     finish();
-                                    Common.gameOver = true;
+
                                 });
                 builder
                         .setNegativeButton(
@@ -1211,6 +1211,7 @@ public class White extends AppCompatActivity {
             }
 
             game.child("white").setValue(Common.whiteBlack);
+            if(Common.whiteBlack.castle == 1) Common.whiteBlack.castle = 0;
             updateAttackSquares(boardLocations, attackedSquares);
             if (attackedSquares[whiteKing.location.y][whiteKing.location.x] == 0) {
                 Common.underCheck = false;

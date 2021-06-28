@@ -1225,6 +1225,7 @@ public class Black extends AppCompatActivity {
             }
 
             game.child("black").setValue(Common.whiteBlack);
+            if(Common.whiteBlack.castle == 1) Common.whiteBlack.castle = 0;
             updateAttackSquares(boardLocations, attackedSquares);
             if (attackedSquares[blackKing.location.y][blackKing.location.x] == 0) {
                 Common.underCheck = false;
