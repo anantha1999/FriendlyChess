@@ -423,20 +423,26 @@ public class Black extends AppCompatActivity {
                 if(flag){
                     WhiteBlack whiteMove = snapshot.getValue(WhiteBlack.class);
                     if(whiteMove.leave){
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(Black.this);
-                        builder.setMessage("Your opponent has left the game");
-                        builder.setTitle("");
-                        builder.setCancelable(false);
-                        builder
-                                .setPositiveButton(
-                                        "OK",
-                                        (dialog, which) -> {
-                                            dialog.cancel();
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                        try {
+                            AlertDialog.Builder builder
+                                    = new AlertDialog
+                                    .Builder(Black.this);
+                            builder.setMessage("Your opponent has left the game");
+                            builder.setTitle("");
+                            builder.setCancelable(false);
+                            builder
+                                    .setPositiveButton(
+                                            "OK",
+                                            (dialog, which) -> {
+                                                Common.gameOver = true;
+                                                dialog.cancel();
+                                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        }
+                        catch (Exception e){
+
+                        }
                     }
                     else if(whiteMove.isGameOver != 0){ //Checks if the opponent resigned or got checkmated
                         Common.gameOver = true;
@@ -551,7 +557,7 @@ public class Black extends AppCompatActivity {
                         if (attackedSquares[blackKing.location.y][blackKing.location.x] == 1) {
                             Common.underCheck = true;
                             if (isCheckmate()) { //Checks if the player got checkmated
-                                print("Inside checkmate black "+ isCheckmate());
+//                                print("Inside checkmate black "+ isCheckmate());
                                 game.child("black").child(("isGameOver")).setValue(1);
                                 Common.gameOver = true;
                                 stopAllTimers();
@@ -928,13 +934,13 @@ public class Black extends AppCompatActivity {
         ConstraintLayout.LayoutParams selectedPieceParams = (ConstraintLayout.LayoutParams) selectedPiece.piece.getLayoutParams();
         int x_mul = piece.location.x;
         int y_mul = piece.location.y;
-        removeAttackSquares(boardLocations, attackedSquares);
+//        removeAttackSquares(boardLocations, attackedSquares);
         piece.captured = true;
-        updateAttackSquares(boardLocations, attackedSquares);
+//        updateAttackSquares(boardLocations, attackedSquares);
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
-            removeAttackSquares(boardLocations, attackedSquares);
+//            removeAttackSquares(boardLocations, attackedSquares);
             piece.captured = false;
-            updateAttackSquares(boardLocations, attackedSquares);
+//            updateAttackSquares(boardLocations, attackedSquares);
             return;
         }
 //        removeAttackSquares(boardLocations, attackedSquares);
@@ -1621,7 +1627,7 @@ public class Black extends AppCompatActivity {
         for(int i=0;i<8;++i){
             for(int j=0;j<8;++j){
                 temp_board[i][j] = boardLocations[i][j];
-                temp_attack[i][j] = attackedSquares[i][j];
+                temp_attack[i][j] = 0;
             }
         }
         removeAttackSquares(temp_board, temp_attack);

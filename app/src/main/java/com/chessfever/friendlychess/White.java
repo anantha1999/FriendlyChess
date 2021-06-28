@@ -416,20 +416,26 @@ public class White extends AppCompatActivity {
                 if(flag){
                     WhiteBlack blackMove = snapshot.getValue(WhiteBlack.class);
                     if(blackMove.leave){
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(White.this);
-                        builder.setMessage("Your opponent has left the game");
-                        builder.setTitle("");
-                        builder.setCancelable(false);
-                        builder
-                                .setPositiveButton(
-                                        "OK",
-                                        (dialog, which) -> {
-                                            dialog.cancel();
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                        try {
+                            AlertDialog.Builder builder
+                                    = new AlertDialog
+                                    .Builder(White.this);
+                            builder.setMessage("Your opponent has left the game");
+                            builder.setTitle("");
+                            builder.setCancelable(false);
+                            builder
+                                    .setPositiveButton(
+                                            "OK",
+                                            (dialog, which) -> {
+                                                Common.gameOver = true;
+                                                dialog.cancel();
+                                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        }
+                        catch(Exception e){
+
+                        }
                     }
                     else if(blackMove.isGameOver != 0){ //Checks if the opponent resigned or got checkmated
                         Common.gameOver = true;
@@ -915,14 +921,14 @@ public class White extends AppCompatActivity {
         int x_mul = piece.location.x;
         int y_mul = piece.location.y;
 
-        removeAttackSquares(boardLocations, attackedSquares);
+//        removeAttackSquares(boardLocations, attackedSquares);
         piece.captured = true;
-        updateAttackSquares(boardLocations, attackedSquares);
+//        updateAttackSquares(boardLocations, attackedSquares);
 
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
-            removeAttackSquares(boardLocations, attackedSquares);
+//            removeAttackSquares(boardLocations, attackedSquares);
             piece.captured = false;
-            updateAttackSquares(boardLocations, attackedSquares);
+//            updateAttackSquares(boardLocations, attackedSquares);
             return;
         }
 
@@ -1595,7 +1601,7 @@ public class White extends AppCompatActivity {
         for(int i=0;i<8;++i){
             for(int j=0;j<8;++j){
                 temp_board[i][j] = boardLocations[i][j];
-                temp_attack[i][j] = attackedSquares[i][j];
+                temp_attack[i][j] = 0;
             }
         }
         removeAttackSquares(temp_board, temp_attack);
