@@ -921,14 +921,14 @@ public class White extends AppCompatActivity {
         int x_mul = piece.location.x;
         int y_mul = piece.location.y;
 
-//        removeAttackSquares(boardLocations, attackedSquares);
+        removeAttackSquares(boardLocations, attackedSquares);
         piece.captured = true;
-//        updateAttackSquares(boardLocations, attackedSquares);
+        updateAttackSquares(boardLocations, attackedSquares);
 
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
-//            removeAttackSquares(boardLocations, attackedSquares);
+            removeAttackSquares(boardLocations, attackedSquares);
             piece.captured = false;
-//            updateAttackSquares(boardLocations, attackedSquares);
+            updateAttackSquares(boardLocations, attackedSquares);
             return;
         }
 
