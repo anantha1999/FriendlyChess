@@ -1156,6 +1156,7 @@ public class White extends AppCompatActivity {
 
     private void updateBoardLocations(ChessPiece piece, int new_x, int new_y){
         if(new_y == 0 && piece.name.equals("Pawn")){
+            Common.whiteBlack.castle = 0;
             pawnPromotion(piece, new_x, new_y);
             updateAttackSquares(boardLocations, attackedSquares);
         }
