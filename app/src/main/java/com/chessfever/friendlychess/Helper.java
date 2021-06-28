@@ -447,7 +447,7 @@ public class Helper {
                     boardLocations[rook2.location.y][rook2.location.x] = 0;
                     pieceLocations[rook2.location.y][rook2.location.x] = 0;
                     rook2.location.x = 5;
-                    boardLocations[rook2.location.y][rook2.location.x] = 1;
+                    boardLocations[rook2.location.y][rook2.location.x] = -1;
                     pieceLocations[rook2.location.y][rook2.location.x] = 16;
                     Common.whiteBlack.rook.id = 15;
                     Common.whiteBlack.rook.old_x = 0;
@@ -464,7 +464,7 @@ public class Helper {
                     boardLocations[rook1.location.y][rook1.location.x] = 0;
                     pieceLocations[rook1.location.y][rook1.location.x] = 0;
                     rook1.location.x = 3;
-                    boardLocations[rook1.location.y][rook1.location.x] = 1;
+                    boardLocations[rook1.location.y][rook1.location.x] = -1;
                     pieceLocations[rook1.location.y][rook1.location.x] = 15;
                     Common.whiteBlack.rook.id = 16;
                     Common.whiteBlack.rook.old_x = (7);
@@ -486,7 +486,7 @@ public class Helper {
                     boardLocations[rook2.location.y][rook2.location.x] = 0;
                     pieceLocations[rook2.location.y][rook2.location.x] = 0;
                     rook2.location.x = 4;
-                    boardLocations[rook2.location.y][rook2.location.x] = 1;
+                    boardLocations[rook2.location.y][rook2.location.x] = -1;
                     pieceLocations[rook2.location.y][rook2.location.x] = -16;
 
                     Common.whiteBlack.rook.id = -15;
@@ -504,7 +504,7 @@ public class Helper {
                     boardLocations[rook1.location.y][rook1.location.x] = 0;
                     pieceLocations[rook1.location.y][rook1.location.x] = 0;
                     rook1.location.x = 2;
-                    boardLocations[rook1.location.y][rook1.location.x] = 1;
+                    boardLocations[rook1.location.y][rook1.location.x] = -1;
                     pieceLocations[rook1.location.y][rook1.location.x] = -15;
 
                     Common.whiteBlack.rook.id = -16;

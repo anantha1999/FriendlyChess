@@ -898,7 +898,9 @@ public class White extends AppCompatActivity {
         int y_mul = ((int)(y/size)) == 8? 7:((int)(y/size));
         print(x_mul+" "+y_mul+" "+size);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) selectedPiece.piece.getLayoutParams();
+
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
+
             return;
         }
         removeAttackSquares(boardLocations, attackedSquares);
@@ -921,17 +923,14 @@ public class White extends AppCompatActivity {
         int x_mul = piece.location.x;
         int y_mul = piece.location.y;
 
-        removeAttackSquares(boardLocations, attackedSquares);
         piece.captured = true;
 
         if((isUnderCheckAfterMove(selectedPiece, selectedPiece.location.x, selectedPiece.location.y, x_mul, y_mul)) || !isMovePossible(selectedPiece, x_mul, y_mul)){
             piece.captured = false;
-            updateAttackSquares(boardLocations, attackedSquares);
-
-
             return;
         }
 
+        removeAttackSquares(boardLocations, attackedSquares);
         if(x_mul != selectedPiece.location.x) selectedPieceParams.horizontalBias = (float)(x_mul*0.14285);
 
         if(y_mul != selectedPiece.location.y) selectedPieceParams.verticalBias = (float)(y_mul*0.14285);
