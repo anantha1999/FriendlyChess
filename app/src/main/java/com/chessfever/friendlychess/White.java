@@ -426,14 +426,6 @@ public class White extends AppCompatActivity {
                                 .setPositiveButton(
                                         "OK",
                                         (dialog, which) -> {
-                                            Intent intent = new Intent(White.this, Home.class);
-                                            Common.gameOver = false;
-                                            Common.isTimer = false;
-                                            Common.time_increment = 0;
-                                            Common.time.black = Common.time.white = 0;
-                                            startActivity(intent);
-                                            Helper.restoreViews(capturedPieces);
-                                            finish();
                                             dialog.cancel();
                                         });
                         AlertDialog alertDialog = builder.create();
@@ -518,7 +510,7 @@ public class White extends AppCompatActivity {
                         //Checks if the opponent has captured a piece
                         if (blackMove.capturedPiece_id != 0) {
                             ChessPiece captured = getId_piece.get(blackMove.capturedPiece_id);
-                            boardLocations[captured.location.y][captured.location.x] = 0;
+//                            boardLocations[captured.location.y][captured.location.x] = 0;
                             captured.captured = true;
                             captured.piece.setVisibility(View.GONE);
                             capturedPieces.add(captured.piece);
