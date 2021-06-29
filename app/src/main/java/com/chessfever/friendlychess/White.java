@@ -1192,6 +1192,8 @@ public class White extends AppCompatActivity {
                 Common.whiteBlack.id = (piece.id > 0) ? piece.id - 1 : piece.id + 1;
             else Common.whiteBlack.id = (piece.id > 0) ? piece.id + 1 : piece.id - 1;
 
+            if(piece.id > 16) Common.whiteBlack.id = piece.id;
+
             if (Common.isTimer) stopWhiteTimer();
 
 
@@ -1791,7 +1793,9 @@ public class White extends AppCompatActivity {
                     else Common.whiteBlack.id = (piece.id > 0) ? piece.id + 1 : piece.id - 1;
 
                     Common.whiteBlack.old_id = Common.whiteBlack.id;
-                    Common.whiteBlack.id = piece.id = new_ids++;
+                    Common.whiteBlack.id = new_ids;
+                    piece.id = new_ids;
+                    new_ids++;
 
 
                     switch(which){
