@@ -1754,7 +1754,7 @@ public class Black extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                game.child("black").child("isGameOver").setValue(-1);
+                game.child("black").child("isGameOver").setValue(1);
                 Common.gameOver = true;
                 AlertDialog.Builder builder
                         = new AlertDialog
