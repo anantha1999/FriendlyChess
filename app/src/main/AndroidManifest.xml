@@ -9,11 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name="com.chessfever.friendlychess.Black"></activity>
-        <activity android:name="com.chessfever.friendlychess.White" />
-        <activity android:name="com.chessfever.friendlychess.Join" />
-        <activity android:name="com.chessfever.friendlychess.Create" />
-        <activity android:name="com.chessfever.friendlychess.Home">
+        <activity android:name="com.chessfever.friendlychess.Black" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.chessfever.friendlychess.White" android:screenOrientation="portrait"/>
+        <activity android:name="com.chessfever.friendlychess.Join" android:screenOrientation="portrait"/>
+        <activity android:name="com.chessfever.friendlychess.Create" android:screenOrientation="portrait"/>
+        <activity android:name="com.chessfever.friendlychess.Home" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
