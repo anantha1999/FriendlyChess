@@ -277,95 +277,97 @@ public class White extends AppCompatActivity {
         game.child("draw").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if(draw_flag){
-                    int draw = snapshot.getValue(Integer.class);
-                    if(request_flag && draw == 1){
-                        Common.gameOver = true;
+                try {
+                    if (draw_flag) {
+                        int draw = snapshot.getValue(Integer.class);
+                        if (request_flag && draw == 1) {
+                            Common.gameOver = true;
 
-                        stopAllTimers();// stop the timers
+                            stopAllTimers();// stop the timers
 
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(White.this);
+                            AlertDialog.Builder builder
+                                    = new AlertDialog
+                                    .Builder(White.this);
 
-                        builder.setMessage("Opponent accepted the draw!");
-                        builder.setTitle("");
-                        builder.setCancelable(false);
+                            builder.setMessage("Opponent accepted the draw!");
+                            builder.setTitle("");
+                            builder.setCancelable(false);
 
-                        builder
-                                .setPositiveButton(
-                                        "Ok",
-                                        (dialog, which) -> {
-                                            Intent intent = new Intent(White.this, Home.class);
-                                            Common.gameOver = false;
-                                            Common.isTimer = false;
-                                            Common.time_increment = 0;
-                                            Common.time.black = Common.time.white = 0;
-                                            startActivity(intent);
-                                            Helper.restoreViews(capturedPieces);
-                                            finish();
-                                            dialog.cancel();
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    }
-                    else if(request_flag && draw == 0){
-                        request_flag = false;
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(White.this);
+                            builder
+                                    .setPositiveButton(
+                                            "Ok",
+                                            (dialog, which) -> {
+                                                Intent intent = new Intent(White.this, Home.class);
+                                                Common.gameOver = false;
+                                                Common.isTimer = false;
+                                                Common.time_increment = 0;
+                                                Common.time.black = Common.time.white = 0;
+                                                startActivity(intent);
+                                                Helper.restoreViews(capturedPieces);
+                                                finish();
+                                                dialog.cancel();
+                                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        } else if (request_flag && draw == 0) {
+                            request_flag = false;
+                            AlertDialog.Builder builder
+                                    = new AlertDialog
+                                    .Builder(White.this);
 
-                        builder.setMessage("Draw was declined.");
-                        builder.setTitle("");
-                        builder.setCancelable(false);
+                            builder.setMessage("Draw was declined.");
+                            builder.setTitle("");
+                            builder.setCancelable(false);
 
-                        builder
-                                .setPositiveButton(
-                                        "Ok",
-                                        (dialog, which) -> {
-                                            dialog.cancel();
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    }
-                    else if(!request_flag && draw == -1){
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(White.this);
+                            builder
+                                    .setPositiveButton(
+                                            "Ok",
+                                            (dialog, which) -> {
+                                                dialog.cancel();
+                                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        } else if (!request_flag && draw == -1) {
+                            AlertDialog.Builder builder
+                                    = new AlertDialog
+                                    .Builder(White.this);
 
-                        builder.setMessage("Opponent is requesting a draw");
-                        builder.setTitle("");
-                        builder.setCancelable(false);
+                            builder.setMessage("Opponent is requesting a draw");
+                            builder.setTitle("");
+                            builder.setCancelable(false);
 
-                        builder
-                                .setPositiveButton(
-                                        "Accept",
-                                        (dialog, which) -> {
-                                            game.child("draw").setValue(1);
-                                            Common.gameOver = true;
+                            builder
+                                    .setPositiveButton(
+                                            "Accept",
+                                            (dialog, which) -> {
+                                                game.child("draw").setValue(1);
+                                                Common.gameOver = true;
 
-                                            stopAllTimers(); // stop the timers
-                                            Intent intent = new Intent(White.this, Home.class);
-                                            Common.gameOver = false;
-                                            Common.isTimer = false;
-                                            Common.time_increment = 0;
-                                            Common.time.black = Common.time.white = 0;
-                                            startActivity(intent);
-                                            Helper.restoreViews(capturedPieces);
-                                            finish();
-                                        });
-                        builder
-                                .setNegativeButton(
-                                        "Decline",
-                                        (dialog, which) -> {
-                                            game.child("draw").setValue(0);
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                                                stopAllTimers(); // stop the timers
+                                                Intent intent = new Intent(White.this, Home.class);
+                                                Common.gameOver = false;
+                                                Common.isTimer = false;
+                                                Common.time_increment = 0;
+                                                Common.time.black = Common.time.white = 0;
+                                                startActivity(intent);
+                                                Helper.restoreViews(capturedPieces);
+                                                finish();
+                                            });
+                            builder
+                                    .setNegativeButton(
+                                            "Decline",
+                                            (dialog, which) -> {
+                                                game.child("draw").setValue(0);
+                                            });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+                        }
+                    } else {
+                        draw_flag = true;
                     }
                 }
-                else{
-                    draw_flag = true;
+                catch (Exception e){
+
                 }
             }
 
@@ -443,52 +445,62 @@ public class White extends AppCompatActivity {
                         stopAllTimers();// stop the timers
 
                         if(blackMove.isGameOver == -1){
-                            AlertDialog.Builder builder
-                                    = new AlertDialog
-                                    .Builder(White.this);
-                            builder.setMessage("You lost.");
-                            builder.setTitle("");
-                            builder.setCancelable(false);
-                            builder
-                                    .setPositiveButton(
-                                            "OK",
-                                            (dialog, which) -> {
-                                                Intent intent = new Intent(White.this, Home.class);
-                                                Common.gameOver = false;
-                                                Common.isTimer = false;
-                                                Common.time_increment = 0;
-                                                Common.time.black = Common.time.white = 0;
-                                                startActivity(intent);
-                                                Helper.restoreViews(capturedPieces);
-                                                finish();
-                                                dialog.cancel();
-                                            });
-                            AlertDialog alertDialog = builder.create();
-                            alertDialog.show();
+                            try {
+                                AlertDialog.Builder builder
+                                        = new AlertDialog
+                                        .Builder(White.this);
+                                builder.setMessage("You lost.");
+                                builder.setTitle("");
+                                builder.setCancelable(false);
+                                builder
+                                        .setPositiveButton(
+                                                "OK",
+                                                (dialog, which) -> {
+                                                    Intent intent = new Intent(White.this, Home.class);
+                                                    Common.gameOver = false;
+                                                    Common.isTimer = false;
+                                                    Common.time_increment = 0;
+                                                    Common.time.black = Common.time.white = 0;
+                                                    startActivity(intent);
+                                                    Helper.restoreViews(capturedPieces);
+                                                    finish();
+                                                    dialog.cancel();
+                                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
+                            catch (Exception e){
+
+                            }
                         }
                         else {
-                            AlertDialog.Builder builder
-                                    = new AlertDialog
-                                    .Builder(White.this);
-                            builder.setMessage("You won!");
-                            builder.setTitle("");
-                            builder.setCancelable(false);
-                            builder
-                                    .setPositiveButton(
-                                            "OK",
-                                            (dialog, which) -> {
-                                                Intent intent = new Intent(White.this, Home.class);
-                                                Common.gameOver = false;
-                                                Common.isTimer = false;
-                                                Common.time_increment = 0;
-                                                Common.time.black = Common.time.white = 0;
-                                                startActivity(intent);
-                                                Helper.restoreViews(capturedPieces);
-                                                finish();
-                                                dialog.cancel();
-                                            });
-                            AlertDialog alertDialog = builder.create();
-                            alertDialog.show();
+                            try {
+                                AlertDialog.Builder builder
+                                        = new AlertDialog
+                                        .Builder(White.this);
+                                builder.setMessage("You won!");
+                                builder.setTitle("");
+                                builder.setCancelable(false);
+                                builder
+                                        .setPositiveButton(
+                                                "OK",
+                                                (dialog, which) -> {
+                                                    Intent intent = new Intent(White.this, Home.class);
+                                                    Common.gameOver = false;
+                                                    Common.isTimer = false;
+                                                    Common.time_increment = 0;
+                                                    Common.time.black = Common.time.white = 0;
+                                                    startActivity(intent);
+                                                    Helper.restoreViews(capturedPieces);
+                                                    finish();
+                                                    dialog.cancel();
+                                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
+                            catch (Exception e){
+
+                            }
                         }
                     }
                     else {
