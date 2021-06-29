@@ -146,11 +146,15 @@ public class Create extends AppCompatActivity {
                 DatabaseReference game = dbRef.child(Common.code);
                 WhiteBlack white = new WhiteBlack();
                 WhiteBlack black = new WhiteBlack();
+                game.child("whiteTime").setValue(0);
+                game.child("blackTime").setValue(0);
                 if(Common.isTimer) {
                     white.time = (int) (Float.parseFloat(minutesValue.getText().toString()) * 60);
                     white.bonus = (int) (Float.parseFloat(bonusValue.getText().toString()));
                     black.time = (int) (Float.parseFloat(minutesValue.getText().toString())*60);
                     black.bonus = (int) (Float.parseFloat(bonusValue.getText().toString()));
+                    game.child("whiteTime").setValue(white.time);
+                    game.child("blackTime").setValue(black.time);
                 }
                 white.isGameOver = 0;
                 black.isGameOver = 0;

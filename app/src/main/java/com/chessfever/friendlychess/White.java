@@ -119,6 +119,8 @@ public class White extends AppCompatActivity {
 
     private int size;
 
+    private boolean timerFlag = false;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +207,7 @@ public class White extends AppCompatActivity {
 
         game = database.child(Common.code);
 
+
         //Checks if the game has a timer
         game.child("timer").addValueEventListener(new ValueEventListener() {
             @Override
@@ -221,6 +224,29 @@ public class White extends AppCompatActivity {
 
             }
         });
+
+        game.child("blackTime").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(timerFlag) {
+                    Common.time.black = snapshot.getValue(Integer.class);
+                    blackClock.setText(Helper.convertTime(Common.time.black));
+                }
+                else {
+                    timerFlag = true;
+                    Common.time.black = snapshot.getValue(Integer.class);
+                    blackClock.setText(Helper.convertTime(Common.time.black));
+                    Common.time.white = Common.time.black;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+
 
         //On click listener for resign, draw and leave buttons
         resign.setOnClickListener(v -> {
@@ -245,6 +271,7 @@ public class White extends AppCompatActivity {
                                     Common.isTimer = false;
                                     Common.time_increment = 0;
                                     Common.time.black = Common.time.white = 0;
+                                    stopAllTimers();
                                     startActivity(intent);
                                     Helper.restoreViews(capturedPieces);
                                     finish();
@@ -302,6 +329,7 @@ public class White extends AppCompatActivity {
                                                 Common.isTimer = false;
                                                 Common.time_increment = 0;
                                                 Common.time.black = Common.time.white = 0;
+                                                stopAllTimers();
                                                 startActivity(intent);
                                                 Helper.restoreViews(capturedPieces);
                                                 finish();
@@ -349,6 +377,7 @@ public class White extends AppCompatActivity {
                                                 Common.isTimer = false;
                                                 Common.time_increment = 0;
                                                 Common.time.black = Common.time.white = 0;
+                                                stopAllTimers();
                                                 startActivity(intent);
                                                 Helper.restoreViews(capturedPieces);
                                                 finish();
@@ -398,6 +427,7 @@ public class White extends AppCompatActivity {
                                     Common.time_increment = 0;
                                     Common.time.black = Common.time.white = 0;
                                     game.child("white").child("leave").setValue(true);
+                                    stopAllTimers();
                                     Helper.restoreViews(capturedPieces);
                                     startActivity(intent);
                                     Helper.restoreViews(capturedPieces);
@@ -434,6 +464,7 @@ public class White extends AppCompatActivity {
                                                 Common.isTimer = false;
                                                 Common.time_increment = 0;
                                                 Common.time.black = Common.time.white = 0;
+                                                stopAllTimers();
                                                 Helper.restoreViews(capturedPieces);
                                                 startActivity(intent);
                                                 finish();
@@ -468,6 +499,7 @@ public class White extends AppCompatActivity {
                                                     Common.isTimer = false;
                                                     Common.time_increment = 0;
                                                     Common.time.black = Common.time.white = 0;
+                                                    stopAllTimers();
                                                     startActivity(intent);
                                                     Helper.restoreViews(capturedPieces);
                                                     finish();
@@ -497,6 +529,7 @@ public class White extends AppCompatActivity {
                                                     Common.isTimer = false;
                                                     Common.time_increment = 0;
                                                     Common.time.black = Common.time.white = 0;
+                                                    stopAllTimers();
                                                     startActivity(intent);
                                                     Helper.restoreViews(capturedPieces);
                                                     finish();
@@ -511,10 +544,6 @@ public class White extends AppCompatActivity {
                         }
                     }
                     else {
-                        if (Common.isTimer) {
-                            Common.time.black = blackMove.time;
-                            blackClock.setText(Helper.convertTime(Common.time.black));
-                        }
 
                         ChessPiece piece = getPiece(blackMove.id, blackMove.old_id);
                         removeAttackSquares(boardLocations, attackedSquares);//removes the old attacked squares before updating with new ones
@@ -590,6 +619,7 @@ public class White extends AppCompatActivity {
                                                     Common.isTimer = false;
                                                     Common.time_increment = 0;
                                                     Common.time.black = Common.time.white = 0;
+                                                    stopAllTimers();
                                                     startActivity(intent);
                                                     Helper.restoreViews(capturedPieces);
                                                     finish();
@@ -603,7 +633,6 @@ public class White extends AppCompatActivity {
 
                         //If the game has timer then stop opponent timer and start player timer
                         if (Common.isTimer) {
-                            stopBlackTimer();
                             startWhiteTimer();
                         }
                         white_turn = true;
@@ -613,14 +642,7 @@ public class White extends AppCompatActivity {
                     //When the opponent move listener is initialised in the beginning of the game, get all the time related details
                     if(Common.isTimer){
                         WhiteBlack timeDetails = snapshot.getValue(WhiteBlack.class);
-
-                        Common.isTimer = timeDetails.isTimer;
-                        Common.time.white = timeDetails.time;
-                        Common.time.black = timeDetails.time;
                         Common.time_increment = timeDetails.bonus;
-
-                        whiteClock.setText(Helper.convertTime((int)(Common.time.white)));
-                        blackClock.setText(Helper.convertTime((int)(Common.time.black)));
                         startWhiteTimer();
                     }
                     flag = true;
@@ -1241,7 +1263,6 @@ public class White extends AppCompatActivity {
 
             }
 
-            if (Common.isTimer) startBlackTimer();
         }
     }
 
@@ -1701,6 +1722,7 @@ public class White extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
 
                     Common.time.white = (int)(millisUntilFinished/1000);
+                    game.child("whiteTime").setValue(Common.time.white);
                     addIncrementWhite = true;
                     whiteClock.setText(Helper.convertTime((int)(millisUntilFinished/1000)));
 
@@ -1708,72 +1730,48 @@ public class White extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                game.child("white").child("isGameOver").setValue(-1);
-                Common.gameOver = true;
-                AlertDialog.Builder builder
-                        = new AlertDialog
-                        .Builder(White.this);
-                builder.setMessage("You lost.");
-                builder.setTitle("");
-                builder.setCancelable(false);
-                builder
-                        .setPositiveButton(
-                                "OK",
-                                (dialog, which) -> {
-                                    Intent intent = new Intent(White.this, Home.class);
-                                    Common.gameOver = false;
-                                    Common.isTimer = false;
-                                    Common.time_increment = 0;
-                                    Common.time.black = Common.time.white = 0;
-                                    startActivity(intent);
-                                    Helper.restoreViews(capturedPieces);
-                                    finish();
-                                    dialog.cancel();
-                                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                try {
+                    game.child("white").child("isGameOver").setValue(-1);
+                    Common.gameOver = true;
+                    AlertDialog.Builder builder
+                            = new AlertDialog
+                            .Builder(White.this);
+                    builder.setMessage("You lost.");
+                    builder.setTitle("");
+                    builder.setCancelable(false);
+                    builder
+                            .setPositiveButton(
+                                    "OK",
+                                    (dialog, which) -> {
+                                        Intent intent = new Intent(White.this, Home.class);
+                                        Common.gameOver = false;
+                                        Common.isTimer = false;
+                                        Common.time_increment = 0;
+                                        Common.time.black = Common.time.white = 0;
+                                        startActivity(intent);
+                                        Helper.restoreViews(capturedPieces);
+                                        finish();
+                                        dialog.cancel();
+                                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                catch (Exception e){
+
+                }
             }
         };
         whiteTimer.start();
-    }
-
-    private void startBlackTimer(){
-
-        blackTimer = new CountDownTimer(Common.time.black*1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-                    Common.time.black = (int)(millisUntilFinished/1000);
-
-                    blackClock.setText(Helper.convertTime((int)(millisUntilFinished/1000)));
-
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        };
-        blackTimer.start();
     }
 
     private void stopWhiteTimer(){
         whiteTimer.cancel();
     }
 
-    private void stopBlackTimer(){
-        blackTimer.cancel();
-    }
 
     private void stopAllTimers(){
         try{
             stopWhiteTimer();
-        }
-        catch (Exception e){
-
-        }
-        try{
-            stopBlackTimer();
         }
         catch (Exception e){
 
@@ -1837,7 +1835,6 @@ public class White extends AppCompatActivity {
 
                     }
 
-                    if (Common.isTimer) startBlackTimer();
                     dialog.cancel();
                 });
 
