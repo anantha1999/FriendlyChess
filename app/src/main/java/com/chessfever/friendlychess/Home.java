@@ -49,6 +49,12 @@ public class Home extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void goToCreate(){
         Intent intent = new Intent(this, Create.class);
         startActivity(intent);

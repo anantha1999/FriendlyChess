@@ -436,7 +436,14 @@ public class Black extends AppCompatActivity {
                                     .setPositiveButton(
                                             "OK",
                                             (dialog, which) -> {
-                                                Common.gameOver = true;
+                                                Intent intent = new Intent(Black.this, Home.class);
+                                                Common.gameOver = false;
+                                                Common.isTimer = false;
+                                                Common.time_increment = 0;
+                                                Common.time.black = Common.time.white = 0;
+                                                Helper.restoreViews(capturedPieces);
+                                                startActivity(intent);
+                                                finish();
                                                 dialog.cancel();
                                             });
                             AlertDialog alertDialog = builder.create();
