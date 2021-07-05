@@ -129,6 +129,8 @@ public class Black extends AppCompatActivity {
 
     private boolean tFlag = true;
 
+    private boolean blackClockFlag = true;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -650,7 +652,8 @@ public class Black extends AppCompatActivity {
                     }
                 }
                 else{
-                    if(Common.isTimer){
+                    if(Common.isTimer && blackClockFlag){
+                        blackClockFlag = false;
                         WhiteBlack timeDetails = snapshot.getValue(WhiteBlack.class);
                         Common.time_increment = timeDetails.bonus;
                         blackClock.setText(Helper.convertTime(Common.time.black));

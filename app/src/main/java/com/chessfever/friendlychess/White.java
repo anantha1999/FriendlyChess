@@ -647,13 +647,12 @@ public class White extends AppCompatActivity {
                 }
                 else{
                     //When the opponent move listener is initialised in the beginning of the game, get all the time related details
-                    if(Common.isTimer){
+                    if(Common.isTimer && whiteClockFlag){
+                        whiteClockFlag = false;
                         WhiteBlack timeDetails = snapshot.getValue(WhiteBlack.class);
                         Common.time_increment = timeDetails.bonus;
-                        if(whiteClockFlag) {
-                            whiteClockFlag = false;
-                            startWhiteTimer();
-                        }
+                        startWhiteTimer();
+
                     }
                     flag = true;
                 }
