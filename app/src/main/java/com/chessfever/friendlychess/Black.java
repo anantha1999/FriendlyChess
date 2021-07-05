@@ -127,6 +127,8 @@ public class Black extends AppCompatActivity {
 
     private boolean timerFlag = false;
 
+    private boolean tFlag = true;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -393,7 +395,9 @@ public class Black extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 if(timerFlag) {
                     Common.time.white = snapshot.getValue(Integer.class);
-                    whiteClock.setText(Helper.convertTime(Common.time.white));
+                    if(tFlag) {
+                        whiteClock.setText(Helper.convertTime(Common.time.white));
+                    }
                 }
                 else{
                     timerFlag = true;
@@ -635,13 +639,14 @@ public class Black extends AppCompatActivity {
 
 
                         }
-
+                        black_turn = true;
                         //If the game has timer then stop opponent timer and start player timer
                         if (Common.isTimer) {
+                            tFlag = false;
                             startBlackTimer();
                         }
 
-                        black_turn = true;
+
                     }
                 }
                 else{
@@ -1216,8 +1221,9 @@ public class Black extends AppCompatActivity {
         if(new_y == 0 && piece.name.equals("Pawn")){
             Common.whiteBlack.castle = 0;
             pawnPromotion(piece, new_x, new_y);
-
             updateAttackSquares(boardLocations, attackedSquares);
+            tFlag = true;
+            stopAllTimers();
         }
         else {
             DatabaseReference game = database.child(Common.code);
@@ -1252,6 +1258,8 @@ public class Black extends AppCompatActivity {
             if (Common.isTimer) stopBlackTimer();
 
             Common.whiteBlack.time = Common.time.black;
+            tFlag = true;
+            stopAllTimers();
 
             if(piece.name.equals("Pawn")){
                 if(getId_piece.containsKey(Common.previousMove.id) && getId_piece.get(Common.previousMove.id).name.equals("Pawn")){
@@ -1740,6 +1748,7 @@ public class Black extends AppCompatActivity {
     }
 
     private void startBlackTimer(){
+        if(!black_turn) return;
         if(addIncrementBlack) Common.time.black += Common.time_increment;
         blackTimer = new CountDownTimer(Common.time.black*1000, 1000) {
             @Override

@@ -121,6 +121,10 @@ public class White extends AppCompatActivity {
 
     private boolean timerFlag = false;
 
+    private boolean tFlag = true;
+
+    private boolean whiteClockFlag = true;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,7 +234,9 @@ public class White extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 if(timerFlag) {
                     Common.time.black = snapshot.getValue(Integer.class);
-                    blackClock.setText(Helper.convertTime(Common.time.black));
+                    if(tFlag) {
+                        blackClock.setText(Helper.convertTime(Common.time.black));
+                    }
                 }
                 else {
                     timerFlag = true;
@@ -630,12 +636,13 @@ public class White extends AppCompatActivity {
                             }
 
                         }
-
+                        white_turn = true;
                         //If the game has timer then stop opponent timer and start player timer
                         if (Common.isTimer) {
+                            tFlag = false;
                             startWhiteTimer();
                         }
-                        white_turn = true;
+
                     }
                 }
                 else{
@@ -643,7 +650,10 @@ public class White extends AppCompatActivity {
                     if(Common.isTimer){
                         WhiteBlack timeDetails = snapshot.getValue(WhiteBlack.class);
                         Common.time_increment = timeDetails.bonus;
-                        startWhiteTimer();
+                        if(whiteClockFlag) {
+                            whiteClockFlag = false;
+                            startWhiteTimer();
+                        }
                     }
                     flag = true;
                 }
@@ -1201,7 +1211,10 @@ public class White extends AppCompatActivity {
         if(new_y == 0 && piece.name.equals("Pawn")){
             Common.whiteBlack.castle = 0;
             pawnPromotion(piece, new_x, new_y);
+
             updateAttackSquares(boardLocations, attackedSquares);
+            stopAllTimers();
+            tFlag = true;
         }
         else {
             //Updates player's moves on board
@@ -1239,6 +1252,8 @@ public class White extends AppCompatActivity {
 
 
             Common.whiteBlack.time = Common.time.white; //Update white time in firebase
+            tFlag = true;
+            stopAllTimers();
 
             if(piece.name.equals("Pawn")){
                 if(getId_piece.containsKey(Common.previousMove.id) && getId_piece.get(Common.previousMove.id).name.equals("Pawn")){
@@ -1716,6 +1731,7 @@ public class White extends AppCompatActivity {
     }
 
     private void startWhiteTimer(){
+        if(!white_turn) return;
         if(addIncrementWhite) Common.time.white += Common.time_increment;
         whiteTimer = new CountDownTimer(Common.time.white*1000, 1000) {
             @Override
